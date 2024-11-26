@@ -17,7 +17,7 @@ class Player extends PositionComponent with CollisionCallbacks {
   Vector2 _velocity = Vector2.zero();
   final double _gravity = 980.0;
   final double _jumpSpeed = 350.0;
-  final double _moveSpeed = 150.0;
+   double _moveSpeed = 350.0;
   final double playerRadius;
 
   void onMount() {
@@ -27,13 +27,13 @@ class Player extends PositionComponent with CollisionCallbacks {
   }
 
   @override
-  void onLoad() {
+  Future<void> onLoad() async {
+    await super.onLoad();
     add(CircleHitbox(
       anchor: anchor,
       radius: playerRadius,
       collisionType: CollisionType.active,
     ));
-    super.onLoad();
   }
 
   @override
@@ -61,13 +61,17 @@ class Player extends PositionComponent with CollisionCallbacks {
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // TODO: implement onCollision
     super.onCollision(intersectionPoints, other);
-    print(other);
-    if (other is Brick) {
-      final ballCenter = absoluteCenter;
-      final brickCenter = other.absoluteCenter;
 
-      _velocity.y = 0;
-      position.y = other.position.y - other.height;
+    if (other is Brick) {
+      if (other.y > position.y) {
+        _velocity.y = 0;
+        position.y = other.position.y - other.height;
+      } else if (other.y == position.y && other.x > position.x) {
+        _velocity.x = 0.0;
+        // _moveSpeed = 0;
+
+        position.x = other.position.x - (other.width / 2) - playerRadius ;
+      }
     }
   }
 

@@ -15,7 +15,8 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-
+    final world = World();
+    add(world);
     camera.viewport =
         FixedResolutionViewport(resolution: Vector2(size.x, size.y));
 
@@ -66,18 +67,38 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
         sizeX: 100,
       ));
     }
-  
+
     for (int i = 0; i <= 5; i++) {
       world.add(brick = Brick(
-        position: Vector2((i * 100) +1000, 120),
+        position: Vector2((i * 100) + 1000, 120),
         sizeX: 100,
       ));
     }
-    for (int i = 0; i <= 10; i++) {
-      world.add(brick = Brick(
-        position: Vector2((i * 100) +1500, 90),
-        sizeX: 100,
-      ));
-    }
+
+     world.add(brick = Brick(
+      position: Vector2((1500) , 100),
+      sizeX: 100,
+    ));
+     world.add(brick = Brick(
+      position: Vector2((1600) , 80),
+      sizeX: 100,
+    ));
+     world.add(brick = Brick(
+      position: Vector2((1700) , 60),
+      sizeX: 100,
+    ));
+     world.add(brick = Brick(
+      position: Vector2((1800) , 40),
+      sizeX: 100,
+    ));
+     world.add(brick = Brick(
+      position: Vector2((1900) , 20),
+      sizeX: 100,
+    ));
+     world.add(brick = Brick(
+      position: Vector2((2500) , 0),
+      sizeX: 100,
+    ));
+    
   }
 }
