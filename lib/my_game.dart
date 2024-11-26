@@ -27,7 +27,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   void onMount() {
     // TODO: implement onMount
     super.onMount();
-    debugMode = true;
+    // debugMode = true;
     _initializeGame();
   }
 
@@ -61,44 +61,56 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       ),
     );
 
-    for (int i = 0; i <= 10; i++) {
+    for (int i = 0; i <= 5; i++) {
       world.add(brick = Brick(
         position: Vector2(i * 100, 100),
         sizeX: 100,
       ));
     }
-
-    for (int i = 0; i <= 5; i++) {
+    for (int i = 1; i <= 5; i++) {
       world.add(brick = Brick(
-        position: Vector2((i * 100) + 1000, 120),
+        position: Vector2((i * 100) + 500, (i * 20 ) + 100),
         sizeX: 100,
       ));
     }
 
      world.add(brick = Brick(
-      position: Vector2((1500) , 100),
+      position: Vector2(1000, 100),
       sizeX: 100,
     ));
      world.add(brick = Brick(
-      position: Vector2((1600) , 80),
+      position: Vector2(1100, 100),
       sizeX: 100,
     ));
      world.add(brick = Brick(
-      position: Vector2((1700) , 60),
+      position: Vector2(1200, 100),
       sizeX: 100,
     ));
      world.add(brick = Brick(
-      position: Vector2((1800) , 40),
+      position: Vector2(1400, 80),
       sizeX: 100,
     ));
      world.add(brick = Brick(
-      position: Vector2((1900) , 20),
+      position: Vector2(1500, 80),
       sizeX: 100,
     ));
      world.add(brick = Brick(
-      position: Vector2((2500) , 0),
+      position: Vector2(1700, 140),
       sizeX: 100,
     ));
+     world.add(brick = Brick(
+      position: Vector2(1800, 140),
+      sizeX: 100,
+    ));
+     world.add(brick = Brick(
+      position: Vector2(2000, 100),
+      sizeX: 100,
+    ));
+     world.add(brick = Brick(
+      position: Vector2(2100, 100),
+      sizeX: 100,
+    ));
+    
     
   }
 }

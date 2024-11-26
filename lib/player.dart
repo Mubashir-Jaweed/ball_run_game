@@ -16,9 +16,10 @@ class Player extends PositionComponent with CollisionCallbacks {
   Color _color = Color(0xFFFFFF00);
   Vector2 _velocity = Vector2.zero();
   final double _gravity = 980.0;
-  final double _jumpSpeed = 350.0;
-   double _moveSpeed = 350.0;
+  final double _jumpSpeed = 300.0;
+  final double _moveSpeed = 350.0;
   final double playerRadius;
+  int _jumpCount = 2;
 
   void onMount() {
     size = Vector2.all(playerRadius * 2);
@@ -61,21 +62,32 @@ class Player extends PositionComponent with CollisionCallbacks {
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // TODO: implement onCollision
     super.onCollision(intersectionPoints, other);
-
     if (other is Brick) {
       if (other.y > position.y) {
-        _velocity.y = 0;
-        position.y = other.position.y - other.height;
+        collideFromBottom(other);
       } else if (other.y == position.y && other.x > position.x) {
-        _velocity.x = 0.0;
-        // _moveSpeed = 0;
-
-        position.x = other.position.x - (other.width / 2) - playerRadius ;
+        collideFromRight(other);
       }
     }
   }
 
+  void collideFromBottom(Brick other) {
+    if (_velocity.y >= 0) {
+      _velocity.y = 0;
+      position.y = other.position.y - other.height;
+      _jumpCount = 2;
+    }
+  }
+
+  void collideFromRight(other) {
+    _velocity.x = 0.0;
+    position.x = other.position.x - (other.width / 2) - playerRadius;
+  }
+
   void jump() {
+    if(_jumpCount >= 1){
+      _jumpCount -= 1;
     _velocity.y = -_jumpSpeed;
+    }
   }
 }
