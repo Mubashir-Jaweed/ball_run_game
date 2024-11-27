@@ -16,7 +16,12 @@ class Brick extends PositionComponent with CollisionCallbacks {
 
   final double sizeX;
 
-
+@override
+  void onMount() {
+    // TODO: implement onMount
+    super.onMount();
+    debugColor = Colors.greenAccent;
+  }
 
   @override
   Future<void> onLoad() async {
@@ -27,13 +32,10 @@ class Brick extends PositionComponent with CollisionCallbacks {
 
 
     add(   RectangleHitbox(
-      size: Vector2(sizeX, 0.1),
+      size: Vector2(sizeX, size.y),
       collisionType: CollisionType.passive,
     ));
-    add(  RectangleHitbox(
-      size: Vector2(0.1, size.y),
-      collisionType: CollisionType.passive,
-    ));
+    
   }
 
   @override

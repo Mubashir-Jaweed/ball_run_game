@@ -20,7 +20,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     camera.viewport =
         FixedResolutionViewport(resolution: Vector2(size.x, size.y));
 
-    // camera.viewfinder.zoom = 0.5;
+    // camera.viewfinder.zoom = 0.1;
   }
 
   @override
@@ -57,59 +57,66 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     world.add(
       myPlayer = Player(
-        position: Vector2(0, 0),
+        position: Vector2(2700, 0),
       ),
     );
 
     for (int i = 0; i <= 5; i++) {
-      world.add(brick = Brick(
+      world.add( Brick(
         position: Vector2(i * 100, 100),
         sizeX: 100,
       ));
     }
-    for (int i = 1; i <= 5; i++) {
-      world.add(brick = Brick(
-        position: Vector2((i * 100) + 500, (i * 20 ) + 100),
+    for (int i = 0; i <= 5; i++) {
+      world.add( Brick(
+        position: Vector2( 1 +(i * 100) + 500, 100 -(i * 20 )),
         sizeX: 100,
       ));
     }
 
-     world.add(brick = Brick(
-      position: Vector2(1000, 100),
+    world.add( Brick(
+      position: Vector2(1100,0),
       sizeX: 100,
     ));
-     world.add(brick = Brick(
-      position: Vector2(1100, 100),
+    world.add( Brick(
+      position: Vector2(1200,0),
       sizeX: 100,
     ));
-     world.add(brick = Brick(
-      position: Vector2(1200, 100),
+    world.add( Brick(
+      position: Vector2(1500,0),
       sizeX: 100,
     ));
-     world.add(brick = Brick(
-      position: Vector2(1400, 80),
+    world.add( Brick(
+      position: Vector2(1600,0),
       sizeX: 100,
     ));
-     world.add(brick = Brick(
-      position: Vector2(1500, 80),
+    world.add( Brick(
+      position: Vector2(1700,0),
       sizeX: 100,
     ));
-     world.add(brick = Brick(
-      position: Vector2(1700, 140),
+    world.add( Brick(
+      position: Vector2(1800,-80),
       sizeX: 100,
     ));
-     world.add(brick = Brick(
-      position: Vector2(1800, 140),
+    world.add( Brick(
+      position: Vector2(1900,-80),
       sizeX: 100,
     ));
-     world.add(brick = Brick(
-      position: Vector2(2000, 100),
-      sizeX: 100,
+    world.add( Brick(
+      position: Vector2(2000,0),
+      sizeX: 300,
     ));
-     world.add(brick = Brick(
-      position: Vector2(2100, 100),
-      sizeX: 100,
+    world.add( Brick(
+      position: Vector2(2300,20),
+      sizeX: 200,
     ));
+     for (int i = 0; i <= 5; i++) {
+      world.add(Brick(
+        position: Vector2(1 + (i * 100) + 2700, 100 - (i * 30)),
+        sizeX: 100,
+      ));
+    }
+
     
     
   }
