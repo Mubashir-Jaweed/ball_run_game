@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
@@ -18,6 +19,7 @@ class Player extends PositionComponent with CollisionCallbacks {
   final double _gravity = 980.0;
   final double _jumpSpeed = 300.0;
   final double _moveSpeed = 250.0;
+  final double _boostSpeed = 600.0;
   final double playerRadius;
   int _jumpCount = 2;
 
@@ -62,6 +64,11 @@ class Player extends PositionComponent with CollisionCallbacks {
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     // TODO: implement onCollision
     super.onCollision(intersectionPoints, other);
+
+     if (other is Boost) {
+      print(other);
+      _velocity.x = _boostSpeed;
+    }
     if (other is Brick) {
       if (other.y > position.y) {
         collideFromBottom(other);
@@ -71,13 +78,15 @@ class Player extends PositionComponent with CollisionCallbacks {
         collideFromRight(other);
       }
     }
+    
+    
   }
 
   void collideFromBottom(Brick other) {
+      _jumpCount = 2;
     if (_velocity.y >= 0) {
       _velocity.y = 0;
       position.y = other.position.y - (size.y / 2);
-      _jumpCount = 2;
     }
   }
 

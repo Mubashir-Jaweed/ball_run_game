@@ -1,26 +1,18 @@
-import 'dart:async';
-import 'dart:ui';
-
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
-class Brick extends PositionComponent with CollisionCallbacks {
-  Brick({
+class Boost extends PositionComponent with CollisionCallbacks {
+  Boost({
     required super.position,
-    required this.sizeX,
-  }) {
-    size = Vector2(sizeX, 20);
-    anchor = Anchor.topLeft;
-  }
+  });
 
-  final double sizeX;
-
-  @override
   void onMount() {
-    // TODO: implement onMount
+    size = Vector2(50, 20);
+    anchor = Anchor.topLeft;
+    debugMode = true;
     super.onMount();
-    debugColor = Colors.greenAccent;
   }
 
   @override
@@ -28,7 +20,7 @@ class Brick extends PositionComponent with CollisionCallbacks {
     await super.onLoad();
 
     add(RectangleHitbox(
-      size: Vector2(sizeX, size.y),
+      size: Vector2(200, 20),
       collisionType: CollisionType.passive,
     ));
   }
@@ -39,8 +31,8 @@ class Brick extends PositionComponent with CollisionCallbacks {
     super.render(canvas);
 
     canvas.drawRect(
-      Rect.fromLTWH(0, 0, sizeX, size.y),
-      Paint()..color = Colors.redAccent,
+      Rect.fromLTWH(0, 0, size.x, size.y),
+      Paint()..color = Colors.green,
     );
   }
 }

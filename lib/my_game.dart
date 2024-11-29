@@ -1,3 +1,4 @@
+import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
 import 'package:ball_run/player.dart';
 import 'package:flame/camera.dart';
@@ -27,7 +28,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   void onMount() {
     // TODO: implement onMount
     super.onMount();
-    debugMode = true;
+    // debugMode = true;
     _initializeGame();
   }
 
@@ -62,22 +63,43 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       ),
     );
 
+     world.add(Boost(position: Vector2(100, 500)));
+
+
     for (int i = 0; i <= 5; i++) {
       world.add(Brick(
         position: Vector2(i * 100, 500),
         sizeX: 100,
       ));
     }
-    for (int i = 1; i <= 5; i++) {
+    for (int i = 0; i <= 5; i++) {
       world.add(Brick(
         position: Vector2((i * 100) + 500, 500 - (i * 30)),
         sizeX: 100,
       ));
     }
+   
+    world.add(Brick(
+      position: Vector2(1100, 300),
+      sizeX: 1000,
+      
+    ));
+        world.add(Boost(position: Vector2(2000, 300)));
+        
+
+    world.add(Boost(position: Vector2(1000, 300)));
+    for (int i = 0; i <= 5; i++) {
+      world.add(Brick(
+        position: Vector2((i * 100) + 2200, 350 + (i * 30)),
+        sizeX: 100,
+      ));
+    }
 
     world.add(Brick(
-      position: Vector2(800, 350),
-      sizeX: 800,
+      position: Vector2(2800, 500),
+      sizeX: 1000,
     ));
+
+     
   }
 }
