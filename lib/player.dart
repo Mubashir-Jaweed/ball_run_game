@@ -65,8 +65,9 @@ class Player extends PositionComponent with CollisionCallbacks {
     if (other is Brick) {
       if (other.y > position.y) {
         collideFromBottom(other);
-      } else if (other.y == position.y ||
-          other.y - position.y < 20 && position.x < other.x) {
+      } else if ((other.y == position.y ||
+              position.y - other.y < (other.height + (size.y / 2))) &&
+          position.x < other.x) {
         collideFromRight(other);
       }
     }
@@ -75,14 +76,15 @@ class Player extends PositionComponent with CollisionCallbacks {
   void collideFromBottom(Brick other) {
     if (_velocity.y >= 0) {
       _velocity.y = 0;
-      position.y = other.position.y - other.height;
+      position.y = other.position.y - (size.y / 2);
       _jumpCount = 2;
     }
   }
 
   void collideFromRight(other) {
     _velocity.x = 0.0;
-    position.x = other.position.x - (other.width / 2) - playerRadius;
+
+    position.x = other.position.x - (size.x / 2);
   }
 
   void jump() {

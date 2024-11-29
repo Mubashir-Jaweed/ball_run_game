@@ -11,7 +11,7 @@ class Brick extends PositionComponent with CollisionCallbacks {
     required this.sizeX,
   }) {
     size = Vector2(sizeX, 20);
-    anchor = Anchor.center;
+    anchor = Anchor.topLeft;
   }
 
   final double sizeX;
