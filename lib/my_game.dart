@@ -63,8 +63,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       ),
     );
 
-     world.add(Boost(position: Vector2(100, 500)));
-
+    world.add(Boost(position: Vector2(100, 500),));
 
     for (int i = 0; i <= 5; i++) {
       world.add(Brick(
@@ -78,16 +77,16 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
         sizeX: 100,
       ));
     }
-   
+
     world.add(Brick(
       position: Vector2(1100, 300),
       sizeX: 1000,
-      
     ));
-        world.add(Boost(position: Vector2(2000, 300)));
-        
+    world.add(Boost(position: Vector2(2000, 300)));
 
-    world.add(Boost(position: Vector2(1000, 300)));
+    world.add(Boost(
+      position: Vector2(1000, 300),
+    ));
     for (int i = 0; i <= 5; i++) {
       world.add(Brick(
         position: Vector2((i * 100) + 2200, 350 + (i * 30)),
@@ -99,7 +98,5 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       position: Vector2(2800, 500),
       sizeX: 1000,
     ));
-
-     
   }
 }

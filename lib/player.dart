@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class Player extends PositionComponent with CollisionCallbacks {
   Player({
     required super.position,
-    this.playerRadius = 10,
+    this.playerRadius = 8,
   }) : super(
           priority: 20,
         );
@@ -17,9 +17,8 @@ class Player extends PositionComponent with CollisionCallbacks {
   Color _color = Color(0xFFFFFF00);
   Vector2 _velocity = Vector2.zero();
   final double _gravity = 980.0;
-  final double _jumpSpeed = 300.0;
+  final double _jumpSpeed = 350.0;
   final double _moveSpeed = 250.0;
-  final double _boostSpeed = 600.0;
   final double playerRadius;
   int _jumpCount = 2;
 
@@ -66,8 +65,22 @@ class Player extends PositionComponent with CollisionCallbacks {
     super.onCollision(intersectionPoints, other);
 
      if (other is Boost) {
-      print(other);
-      _velocity.x = _boostSpeed;
+        double boostAmount = other.speed; 
+      double incrementStep = boostAmount / 10; 
+      int steps = 10; 
+      int stepDurationMs = 50;
+
+       Timer.periodic(
+        Duration(milliseconds: stepDurationMs),
+        (timer) {
+          if (steps > 0) {
+            _velocity.x += incrementStep;
+            steps--;
+          } else {
+            timer.cancel();
+          }
+        },
+      );
     }
     if (other is Brick) {
       if (other.y > position.y) {
