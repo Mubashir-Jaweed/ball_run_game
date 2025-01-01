@@ -6,15 +6,14 @@ import 'package:flutter/scheduler.dart';
 class Boost extends PositionComponent with CollisionCallbacks {
   Boost({
     required super.position,
-  }): super(
-    size: Vector2(100,20)
-  );
+  }) : super( priority: 10);
 
-  final double speed = 550;
+  final double radius = 15;
   late Sprite _boostSprite;
 
   void onMount() {
-    anchor = Anchor.topLeft;
+    size = Vector2.all(radius * 2);
+    anchor = Anchor.center;
     debugMode = true;
     super.onMount();
   }
@@ -22,23 +21,11 @@ class Boost extends PositionComponent with CollisionCallbacks {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-       _boostSprite = await Sprite.load('boost.png');
-
-
-    add(RectangleHitbox(
-      size: Vector2(size.x, size.y),
-      collisionType: CollisionType.passive,
-    ));
-    
+    add(CircleHitbox(
+        anchor: anchor,
+        collisionType: CollisionType.passive,
+        radius: radius,));
   }
 
-  @override
-  void render(Canvas canvas) {
-    // TODO: implement render
-    super.render(canvas);
-
-   _boostSprite.render(canvas,
-   size: Vector2(size.x / 2, size.y));
-  }
+ 
 }
