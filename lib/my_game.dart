@@ -59,44 +59,62 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     world.add(
       myPlayer = Player(
-        position: Vector2(0, 450),
+        position: Vector2(0, 1000),
       ),
     );
 
-    world.add(Boost(position: Vector2(100, 500),));
+    loadLevel(level1);
 
-    for (int i = 0; i <= 5; i++) {
-      world.add(Brick(
-        position: Vector2(i * 100, 500),
-        sizeX: 100,
-      ));
-    }
-    for (int i = 0; i <= 5; i++) {
-      world.add(Brick(
-        position: Vector2((i * 100) + 500, 500 - (i * 30)),
-        sizeX: 100,
-      ));
-    }
 
-    world.add(Brick(
-      position: Vector2(1100, 300),
-      sizeX: 1000,
-    ));
-    world.add(Boost(position: Vector2(2000, 300)));
 
-    world.add(Boost(
-      position: Vector2(1000, 300),
-    ));
-    for (int i = 0; i <= 5; i++) {
-      world.add(Brick(
-        position: Vector2((i * 100) + 2200, 350 + (i * 30)),
-        sizeX: 100,
-      ));
-    }
-
-    world.add(Brick(
-      position: Vector2(2800, 500),
-      sizeX: 1000,
-    ));
+  
   }
+
+
+  void loadLevel(List<Map<String, dynamic>> levelData) {
+  for (final element in levelData) {
+    final type = element["type"];
+    final position = element["position"];
+    final x = position["x"];
+    final y = position["y"];
+
+    if (type == "Brick") {
+      final sizeX = element["sizeX"];
+      world.add(Brick(position: Vector2(x, y), sizeX: sizeX));
+    } else if (type == "Boost") {
+      world.add(Boost(position: Vector2(x, y)));
+    }
+  }
+}
+
+  final level1 = [
+  // Ground layer
+  {"type": "Brick", "position": {"x": 0, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 100, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 200, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 300, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 400, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 500, "y": 1020}, "sizeX": 100},
+  {"type": "Boost", "position": {"x": 550, "y": 980}},
+
+  // First platform
+  {"type": "Brick", "position": {"x": 650, "y": 900}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 750, "y": 900}, "sizeX": 100},
+  {"type": "Boost", "position": {"x": 800, "y": 860}},
+
+  // Gaps and continuation
+  {"type": "Brick", "position": {"x": 950, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1050, "y": 1020}, "sizeX": 100},
+
+  // Second platform
+  {"type": "Brick", "position": {"x": 1150, "y": 850}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1250, "y": 850}, "sizeX": 100},
+  {"type": "Boost", "position": {"x": 1300, "y": 810}},
+
+  // Final stretch
+  {"type": "Brick", "position": {"x": 1400, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1500, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1600, "y": 1020}, "sizeX": 100},
+  {"type": "Goal", "position": {"x": 1700, "y": 980}}, // Example of a goal
+];
 }

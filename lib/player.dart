@@ -18,8 +18,8 @@ class Player extends PositionComponent with CollisionCallbacks {
   Vector2 _velocity = Vector2.zero();
   final double _gravity = 980.0;
   final double _jumpSpeed = 350.0;
-  final double _moveSpeed = 250.0;
-  final double _boostSpeed = 550.0;
+  final double _moveSpeed = 200.0;
+  final double _boostSpeed = 600.0;
   final double playerRadius;
   bool _isBoostOn = false;
   int _jumpCount = 2;
@@ -88,7 +88,7 @@ class Player extends PositionComponent with CollisionCallbacks {
 
   void applyBoost(Boost other){
     _isBoostOn = true;
-    Future.delayed(Duration(milliseconds:600 ),(){
+    Future.delayed(Duration(milliseconds:400 ),(){
       _isBoostOn = false;
     });
   }
