@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 class Brick extends PositionComponent with CollisionCallbacks {
   Brick({
     required super.position,
-    required this.sizeX,
+    this.sizeX = 100,
   }) {
     size = Vector2(sizeX, 20);
     anchor = Anchor.topLeft;

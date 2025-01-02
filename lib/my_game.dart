@@ -1,6 +1,7 @@
 import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
 import 'package:ball_run/player.dart';
+import 'package:ball_run/spike.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -76,7 +77,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     final type = element["type"];
     final position = element["position"];
     final x = position["x"];
-    final y = position["y"];
+    final y = position["y"] + 1000;
 
     if (type == "Brick") {
       final sizeX = element["sizeX"];
@@ -84,37 +85,38 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     } else if (type == "Boost") {
       world.add(Boost(position: Vector2(x, y)));
     }
+     else if (type == "Spike") {
+      world.add(Spike(position: Vector2(x, y)));
+    }
   }
 }
 
   final level1 = [
   // Ground layer
-  {"type": "Brick", "position": {"x": 0, "y": 1020}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 100, "y": 1020}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 200, "y": 1020}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 300, "y": 1020}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 400, "y": 1020}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 500, "y": 1020}, "sizeX": 100},
-  {"type": "Boost", "position": {"x": 550, "y": 980}},
+  {"type": "Brick", "position": {"x": 0, "y": 20}, "sizeX": 600},
+  {"type": "Spike", "position": {"x": 300, "y": 0}},
+  {"type": "Brick", "position": {"x": 500, "y": 40}, "sizeX": 200},
+  
+  {"type": "Brick", "position": {"x": 800, "y": 40}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 900, "y": 60}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1000, "y": 80}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1100, "y": 100}, "sizeX": 100},
+  
+  {"type": "Brick", "position": {"x": 1300, "y": 100}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1400, "y": 100}, "sizeX": 100},
 
-  // First platform
-  {"type": "Brick", "position": {"x": 650, "y": 900}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 750, "y": 900}, "sizeX": 100},
-  {"type": "Boost", "position": {"x": 800, "y": 860}},
+  {"type": "Brick", "position": {"x": 1500, "y": 140}, "sizeX": 100},
 
-  // Gaps and continuation
-  {"type": "Brick", "position": {"x": 950, "y": 1020}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 1050, "y": 1020}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1600, "y": 100}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 1700, "y": 100}, "sizeX": 400},
+  {"type": "Boost", "position": {"x": 2050, "y": 60}},
 
-  // Second platform
-  {"type": "Brick", "position": {"x": 1150, "y": 850}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 1250, "y": 850}, "sizeX": 100},
-  {"type": "Boost", "position": {"x": 1300, "y": 810}},
+  {"type": "Brick", "position": {"x": 2400, "y": 100}, "sizeX": 200},
 
-  // Final stretch
-  {"type": "Brick", "position": {"x": 1400, "y": 1020}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 1500, "y": 1020}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 1600, "y": 1020}, "sizeX": 100},
-  {"type": "Goal", "position": {"x": 1700, "y": 980}}, // Example of a goal
+  {"type": "Brick", "position": {"x": 2700, "y": 100}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 2700, "y": 120}, "sizeX": 400},
+  {"type": "Brick", "position": {"x": 2900, "y": 100}, "sizeX": 200},
 ];
+
+
 }
