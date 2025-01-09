@@ -18,7 +18,7 @@ class Player extends PositionComponent with CollisionCallbacks {
           priority: 20,
         );
 
-  Color _color = Color.fromARGB(255, 93, 193, 255);
+  Color _color = Color.fromARGB(255, 0, 154, 250);
   Vector2 _velocity = Vector2.zero();
   final double _gravity = 980.0;
   final double _jumpSpeed = 350.0;
@@ -55,7 +55,26 @@ class Player extends PositionComponent with CollisionCallbacks {
     } else {
       _velocity.x = _moveSpeed;
     }
-    
+
+    parent!.add(ParticleSystemComponent(
+      position: position.clone(),
+      particle: Particle.generate(
+        count: 1,
+        lifespan: 0.2,
+        generator:(i) => AcceleratedParticle(
+        acceleration:Vector2.all(1),
+        child: CircleParticle(
+          paint: Paint()..color = _color.withOpacity(0.1),
+          radius: playerRadius/1
+        ),
+      ),
+      )
+    ));
+
+
+   if(position.y > 1300){
+    gameOverWithEffect();
+   } 
   }
 
   @override
@@ -68,6 +87,7 @@ class Player extends PositionComponent with CollisionCallbacks {
       playerRadius,
       Paint()..color = _color,
     );
+    
   }
 
   @override
@@ -91,12 +111,13 @@ class Player extends PositionComponent with CollisionCallbacks {
 
     if (other is Spike) {
       print('game over');
-      showCollectEffect();
+      gameOverWithEffect();
     }
     if (other is Star) {
       print('point');
       other.showCollectEffect();
     }
+    
   }
 
   void applyBoost(Boost other) {
@@ -126,7 +147,7 @@ class Player extends PositionComponent with CollisionCallbacks {
     }
   }
 
-  void showCollectEffect() {
+  void gameOverWithEffect() {
     final rnd = Random();
     Vector2 randomVector2() =>
         (Vector2.random(rnd) - Vector2.random(rnd)) * 50;
