@@ -1,5 +1,6 @@
 import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
+import 'package:ball_run/data/levels.dart';
 import 'package:ball_run/player.dart';
 import 'package:ball_run/spike.dart';
 import 'package:ball_run/star.dart';
@@ -65,35 +66,39 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       ),
     );
 
-    loadLevel(level1);
+    loadLevel(levels[1]);
+  }
 
 
+  void loadLevel(List<List<Map<String, dynamic>>>? levelData) {
 
+    int count = 10;
+    for(int i = 0;i<=count; i++){
+      
+    }
+    count = count * 2;
   
-  }
 
-
-  void loadLevel(List<Map<String, dynamic>> levelData) {
-  for (final element in levelData) {
-    final type = element["type"];
-    final position = element["position"];
-    final x = position["x"];
-    final y = position["y"] + 1000;
-
-    if (type == "Brick") {
-      final sizeX = element["sizeX"];
-      world.add(Brick(position: Vector2(x, y), sizeX: sizeX));
-    } else if (type == "Boost") {
-      world.add(Boost(position: Vector2(x, y)));
-    }
-     else if (type == "Spike") {
-      world.add(Spike(position: Vector2(x, y)));
-    }
-     else if (type == "Star") {
-      world.add(Star(position: Vector2(x, y)));
-    }
-  }
+    // if (t == "Brick") {
+    //   final sizeX = element["sizeX"];
+    //   world.add(Brick(position: Vector2(x, y), sizeX: sizeX));
+    // } else if (t == "Boost") {
+    //   world.add(Boost(position: Vector2(x, y)));
+    // }
+    //  else if (t == "Spike") {
+    //   world.add(Spike(position: Vector2(x, y)));
+    // }
+    //  else if (t == "Star") {
+    //   world.add(Star(position: Vector2(x, y)));
+    // }
+  
 }
+
+void generateGameComponents(List<List> gameComponents){
+
+}
+
+
   final level1 = [
   // Ground layer
   {"type": "Brick", "position": {"x": 0, "y": 20}, "sizeX": 100},
