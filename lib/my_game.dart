@@ -2,6 +2,7 @@ import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
 import 'package:ball_run/player.dart';
 import 'package:ball_run/spike.dart';
+import 'package:ball_run/star.dart';
 import 'package:flame/camera.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -88,13 +89,28 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
      else if (type == "Spike") {
       world.add(Spike(position: Vector2(x, y)));
     }
+     else if (type == "Star") {
+      world.add(Star(position: Vector2(x, y)));
+    }
   }
 }
-
   final level1 = [
   // Ground layer
-  {"type": "Brick", "position": {"x": 0, "y": 20}, "sizeX": 600},
-  {"type": "Spike", "position": {"x": 300, "y": 0}},
+  {"type": "Brick", "position": {"x": 0, "y": 20}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 100, "y": 20}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 200, "y": 20}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 300, "y": 20}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 400, "y": 20}, "sizeX": 100},
+  {"type": "Brick", "position": {"x": 500, "y": 20}, "sizeX": 100},
+  {"type": "Spike", "position": {"x": 200, "y": 0}},
+  {"type": "Spike", "position": {"x": 150, "y": 0}},
+  {"type": "Star", "position": {"x": 200, "y": -40}},
+  {"type": "Spike", "position": {"x": 200, "y": -80}},
+  {"type": "Spike", "position": {"x": 300, "y": -20}},
+  {"type": "Spike", "position": {"x": 550, "y": 0}},
+  {"type": "Spike", "position": {"x": 550, "y": -40}},
+  {"type": "Star", "position": {"x": 550, "y": -80}},
+
   {"type": "Brick", "position": {"x": 500, "y": 40}, "sizeX": 200},
   
   {"type": "Brick", "position": {"x": 800, "y": 40}, "sizeX": 100},
@@ -114,9 +130,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   {"type": "Brick", "position": {"x": 2400, "y": 100}, "sizeX": 200},
 
   {"type": "Brick", "position": {"x": 2700, "y": 100}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 2700, "y": 120}, "sizeX": 400},
-  {"type": "Brick", "position": {"x": 2900, "y": 100}, "sizeX": 200},
+  // {"type": "Brick", "position": {"x": 2700, "y": 120}, "sizeX": 400},
+  // {"type": "Brick", "position": {"x": 2900, "y": 100}, "sizeX": 200},
 ];
-
-
 }

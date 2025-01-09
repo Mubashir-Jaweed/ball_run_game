@@ -15,18 +15,20 @@ class Brick extends PositionComponent with CollisionCallbacks {
   }
 
   final double sizeX;
+  late Sprite _brickSprite;
 
   @override
   void onMount() {
     // TODO: implement onMount
     super.onMount();
+    // debugMode= true;
     debugColor = Colors.greenAccent;
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
+    _brickSprite = await Sprite.load('brick.png');
     add(RectangleHitbox(
       size: Vector2(sizeX, size.y),
       collisionType: CollisionType.passive,
@@ -38,9 +40,12 @@ class Brick extends PositionComponent with CollisionCallbacks {
     // TODO: implement render
     super.render(canvas);
 
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, sizeX, size.y),
-      Paint()..color = Colors.redAccent,
-    );
+    // canvas.drawRect(
+    //   Rect.fromLTWH(0, 0, sizeX, size.y),
+    //   Paint()..color = Colors.redAccent,
+    // );
+
+    _brickSprite.render(canvas,
+    size: Vector2(sizeX, size.y));
   }
 }
