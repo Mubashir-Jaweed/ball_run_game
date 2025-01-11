@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
 import 'package:ball_run/data/levels.dart';
@@ -65,77 +67,55 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
         position: Vector2(0, 1000),
       ),
     );
+    world.add(Brick(position: Vector2(0, 1020)));
+    world.add(Brick(position: Vector2(100, 1020)));
+    world.add(Brick(position: Vector2(200, 1020)));
 
-    loadLevel(levels[1]);
+    // loadLevel(levels[1]!);
+    generateGameComponents();
   }
 
+  void loadLevel(List<List<Map<String, dynamic>>> levelData) {
+    int startFrom = 0;
+    int count = levelData.length - 1;
+    for (int i = startFrom; i <= count; i++) {
+      for (var object in levelData[i]) {
+        double x = object['p']['x'];
+        double y = object['p']['y'] + 1000;
 
-  void loadLevel(List<List<Map<String, dynamic>>>? levelData) {
-
-    int count = 10;
-    for(int i = 0;i<=count; i++){
-      
+        if (object['t'] == "br") {
+          world.add(Brick(position: Vector2(x, y)));
+        } else if (object['t'] == "bo") {
+          world.add(Boost(position: Vector2(x, y)));
+        } else if (object['t'] == "sp") {
+          world.add(Spike(position: Vector2(x, y)));
+        } else if (object['t'] == "s") {
+          world.add(Star(position: Vector2(x, y)));
+        }
+      }
     }
+    startFrom = count;
     count = count * 2;
-  
+    generateGameComponents();
+  }
 
-    // if (t == "Brick") {
-    //   final sizeX = element["sizeX"];
-    //   world.add(Brick(position: Vector2(x, y), sizeX: sizeX));
-    // } else if (t == "Boost") {
-    //   world.add(Boost(position: Vector2(x, y)));
-    // }
-    //  else if (t == "Spike") {
-    //   world.add(Spike(position: Vector2(x, y)));
-    // }
-    //  else if (t == "Star") {
-    //   world.add(Star(position: Vector2(x, y)));
-    // }
-  
-}
+  void generateGameComponents() {
+    double startFrom = 0;
+    double count = 100;
+    late PositionComponent _lastBrick;
+    double startFromX = 300;
 
-void generateGameComponents(List<List> gameComponents){
+    for (double i = startFrom; i < count; i++) {
 
-}
+      var randomY = Random().nextInt(5);
+      var randomXSpacing = Random().nextInt(3);
+      print(randomXSpacing);
 
-
-  final level1 = [
-  // Ground layer
-  {"type": "Brick", "position": {"x": 0, "y": 20}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 100, "y": 20}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 200, "y": 20}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 300, "y": 20}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 400, "y": 20}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 500, "y": 20}, "sizeX": 100},
-  {"type": "Spike", "position": {"x": 200, "y": 0}},
-  {"type": "Spike", "position": {"x": 150, "y": 0}},
-  {"type": "Star", "position": {"x": 200, "y": -40}},
-  {"type": "Spike", "position": {"x": 200, "y": -80}},
-  {"type": "Spike", "position": {"x": 300, "y": -20}},
-  {"type": "Spike", "position": {"x": 550, "y": 0}},
-  {"type": "Spike", "position": {"x": 550, "y": -40}},
-  {"type": "Star", "position": {"x": 550, "y": -80}},
-
-  {"type": "Brick", "position": {"x": 500, "y": 40}, "sizeX": 200},
-  
-  {"type": "Brick", "position": {"x": 800, "y": 40}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 900, "y": 60}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 1000, "y": 80}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 1100, "y": 100}, "sizeX": 100},
-  
-  {"type": "Brick", "position": {"x": 1300, "y": 100}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 1400, "y": 100}, "sizeX": 100},
-
-  {"type": "Brick", "position": {"x": 1500, "y": 140}, "sizeX": 100},
-
-  {"type": "Brick", "position": {"x": 1600, "y": 100}, "sizeX": 100},
-  {"type": "Brick", "position": {"x": 1700, "y": 100}, "sizeX": 400},
-  {"type": "Boost", "position": {"x": 2050, "y": 60}},
-
-  {"type": "Brick", "position": {"x": 2400, "y": 100}, "sizeX": 200},
-
-  {"type": "Brick", "position": {"x": 2700, "y": 100}, "sizeX": 100},
-  // {"type": "Brick", "position": {"x": 2700, "y": 120}, "sizeX": 400},
-  // {"type": "Brick", "position": {"x": 2900, "y": 100}, "sizeX": 200},
-];
+      world.add(Brick(
+          position: Vector2(startFromX + (100 * randomXSpacing) + (100 * i ), 1000 + (randomY * 20))),
+        );
+    }
+    startFrom = count;
+    count = count * 2;
+  }
 }

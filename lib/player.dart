@@ -18,25 +18,28 @@ class Player extends PositionComponent with CollisionCallbacks {
           priority: 20,
         );
 
-  Color _color = Color.fromARGB(255, 0, 154, 250);
+  Color _color = Color(0xFF009AFA);
   Vector2 _velocity = Vector2.zero();
   final double _gravity = 980.0;
   final double _jumpSpeed = 350.0;
-  final double _moveSpeed = 250.0;
-  final double _boostSpeed = 500.0;
+  final double _moveSpeed = 200.0;
+  final double _boostSpeed = 600.0;
   final double playerRadius;
   bool _isBoostOn = false;
   int _jumpCount = 2;
+  late Sprite _playerSprite;
 
   void onMount() {
     size = Vector2.all(playerRadius * 2);
     anchor = Anchor.center;
+    // debugMode = true;
     super.onMount();
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    _playerSprite = await Sprite.load('player.png');
     add(CircleHitbox(
       anchor: anchor,
       radius: playerRadius,
@@ -57,24 +60,20 @@ class Player extends PositionComponent with CollisionCallbacks {
     }
 
     parent!.add(ParticleSystemComponent(
-      position: position.clone(),
-      particle: Particle.generate(
-        count: 1,
-        lifespan: 0.2,
-        generator:(i) => AcceleratedParticle(
-        acceleration:Vector2.all(1),
-        child: CircleParticle(
-          paint: Paint()..color = _color.withOpacity(0.1),
-          radius: playerRadius/1
-        ),
-      ),
-      )
-    ));
+        position: position.clone(),
+        particle: Particle.generate(
+          count: 1,
+          lifespan: 0.2,
+          generator: (i) => AcceleratedParticle(
+            acceleration: Vector2.all(1),
+            child: CircleParticle(
+                paint: Paint()..color = _color, radius: playerRadius / 1),
+          ),
+        )));
 
-
-   if(position.y > 1300){
-    gameOverWithEffect();
-   } 
+    if (position.y > 1300) {
+      gameOverWithEffect();
+    }
   }
 
   @override
@@ -82,12 +81,16 @@ class Player extends PositionComponent with CollisionCallbacks {
     // TODO: implement render
     super.render(canvas);
 
-    canvas.drawCircle(
-      (size / 2).toOffset(),
-      playerRadius,
-      Paint()..color = _color,
+    // canvas.drawCircle(
+    //   (size / 2).toOffset(),
+    //   playerRadius,
+    //   Paint()..color = _color,
+    // );
+
+    _playerSprite.render(
+      canvas,
+      size: size,
     );
-    
   }
 
   @override
@@ -117,7 +120,6 @@ class Player extends PositionComponent with CollisionCallbacks {
       print('point');
       other.showCollectEffect();
     }
-    
   }
 
   void applyBoost(Boost other) {
@@ -149,8 +151,7 @@ class Player extends PositionComponent with CollisionCallbacks {
 
   void gameOverWithEffect() {
     final rnd = Random();
-    Vector2 randomVector2() =>
-        (Vector2.random(rnd) - Vector2.random(rnd)) * 50;
+    Vector2 randomVector2() => (Vector2.random(rnd) - Vector2.random(rnd)) * 50;
     parent!.add(
       ParticleSystemComponent(
         position: position,
@@ -165,11 +166,13 @@ class Player extends PositionComponent with CollisionCallbacks {
                   to: rnd.nextDouble() * pi * 2,
                   child: ComputedParticle(
                     renderer: (canvas, particle) {
-                     
                       canvas.drawCircle(
                         (size / 2).toOffset(),
                         2,
-                        Paint()..color = _color.withOpacity( 1 - particle.progress,),
+                        Paint()
+                          ..color = _color.withOpacity(
+                            1 - particle.progress,
+                          ),
                       );
                     },
                   ),
