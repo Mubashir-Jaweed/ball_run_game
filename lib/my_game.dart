@@ -70,8 +70,9 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     world.add(Brick(position: Vector2(0, 1020)));
     world.add(Brick(position: Vector2(100, 1020)));
     world.add(Brick(position: Vector2(200, 1020)));
+    world.add(Brick(position: Vector2(300, 1020)));
 
-    // loadLevel(levels[1]!);
+    // loadLevel(levels[1]);
     generateGameComponents();
   }
 
@@ -96,25 +97,52 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     }
     startFrom = count;
     count = count * 2;
-    generateGameComponents();
   }
 
   void generateGameComponents() {
-    double startFrom = 0;
-    double count = 100;
-    late PositionComponent _lastBrick;
-    double startFromX = 300;
+    int startFrom = 0;
+    int count = 1;
+    late Brick _latestBrick;
+    double startFromX = 400;
 
-    for (double i = startFrom; i < count; i++) {
+    for (int i = startFrom; i < count; i++) {
 
       var randomY = Random().nextInt(5);
       var randomXSpacing = Random().nextInt(3);
-      print(randomXSpacing);
 
-      world.add(Brick(
+      world.add(_latestBrick = Brick(
           position: Vector2(startFromX + (100 * randomXSpacing) + (100 * i ), 1000 + (randomY * 20))),
         );
     }
+
+      var randomBrickSet = Random().nextInt(levels.length);
+      List brickSet = levels[randomBrickSet];
+      print(brickSet.length + count);
+      print(count);
+    
+
+
+      for (int j = count; j < brickSet.length+count ; j++) {
+
+        int indexOfObject = j-count;
+        print(brickSet[indexOfObject]);
+
+        double y = brickSet[indexOfObject]['p']['y'] + _latestBrick.y ;
+        double x = startFromX + (j * 100) + (brickSet[indexOfObject]['p']['x']* 100);
+
+
+         if (brickSet[indexOfObject]['t'] == "br") {
+          world.add(Brick(position: Vector2(x, y)));
+        } else if (brickSet[indexOfObject]['t'] == "bo") {
+          world.add(Boost(position: Vector2(x, y)));
+        } else if (brickSet[indexOfObject]['t'] == "sp") {
+          world.add(Spike(position: Vector2(x, y)));
+        } else if (brickSet[indexOfObject]['t'] == "s") {
+          world.add(Star(position: Vector2(x, y)));
+        }
+      }
+
+
     startFrom = count;
     count = count * 2;
   }
