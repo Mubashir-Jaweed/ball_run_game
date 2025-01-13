@@ -69,7 +69,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
   void _initializeGame() {
     camera.moveTo(Vector2(0, 0));
-  camera.viewfinder.zoom = 0.1;
+  // camera.viewfinder.zoom = 0.1;
 
     world.add(
       myPlayer = Player(
@@ -94,7 +94,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     // generate random bricks
     for (int i = startFrom; i < count; i++) {
-      var randomY = Random().nextInt(5);
+      var randomY = Random().nextInt(3);
       var randomXSpacing = Random().nextInt(3);
 
       world.add(
@@ -118,8 +118,9 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
         double y = indexOfSameXObj['p']['y'] + _latestBrick.y;
         double x = startFromX + (j * 100) + (indexOfSameXObj['p']['x'] * 100);
 
+
         if (indexOfSameXObj['t'] == "br") {
-           world.add(_latestBrick =  Brick(position: Vector2(x, y)));
+           world.add(  Brick(position: Vector2(x, y)));
         } else if (indexOfSameXObj['t'] == "bo") {
           world.add(Boost(position: Vector2(x, y)));
         } else if (indexOfSameXObj['t'] == "sp") {
@@ -131,6 +132,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     }
 
     startFrom = count + brickSet.length;
-    count = count + brickSet.length;
+    count = startFrom +10;
   }
 }
