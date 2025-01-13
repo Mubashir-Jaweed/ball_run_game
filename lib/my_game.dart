@@ -101,49 +101,50 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
   void generateGameComponents() {
     int startFrom = 0;
-    int count = 1;
+    int count = 5;
     late Brick _latestBrick;
     double startFromX = 400;
 
-    for (int i = startFrom; i < count; i++) {
 
+    // generate random bricks
+    for (int i = startFrom; i < count; i++) {
       var randomY = Random().nextInt(5);
       var randomXSpacing = Random().nextInt(3);
 
-      world.add(_latestBrick = Brick(
-          position: Vector2(startFromX + (100 * randomXSpacing) + (100 * i ), 1000 + (randomY * 20))),
-        );
+      world.add(
+        _latestBrick = Brick(
+            position: Vector2(startFromX + (100 * randomXSpacing) + (100 * i),
+                1000 + (randomY * 20))),
+      );
     }
 
-      var randomBrickSet = Random().nextInt(levels.length);
-      List brickSet = levels[randomBrickSet];
-      print(brickSet.length + count);
-      print(count);
-    
 
+    // add random built-in brick from levels
+    var randomBrickSet = Random().nextInt(levels.length);
+    List brickSet = levels[randomBrickSet];
 
-      for (int j = count; j < brickSet.length+count ; j++) {
+    for (int j = count; j < brickSet.length + count; j++) {
+      int indexOfObject = j - count;
 
-        int indexOfObject = j-count;
-        print(brickSet[indexOfObject]);
+      // loop for same x position
+      for (int k = 0; k < brickSet[j - count].length; k++) {
+        Map indexOfSameXObj = brickSet[indexOfObject][k];
+        double y = indexOfSameXObj['p']['y'] + _latestBrick.y;
+        double x = startFromX + (j * 100) + (indexOfSameXObj['p']['x'] * 100);
 
-        double y = brickSet[indexOfObject]['p']['y'] + _latestBrick.y ;
-        double x = startFromX + (j * 100) + (brickSet[indexOfObject]['p']['x']* 100);
-
-
-         if (brickSet[indexOfObject]['t'] == "br") {
+        if (indexOfSameXObj['t'] == "br") {
           world.add(Brick(position: Vector2(x, y)));
-        } else if (brickSet[indexOfObject]['t'] == "bo") {
+        } else if (indexOfSameXObj['t'] == "bo") {
           world.add(Boost(position: Vector2(x, y)));
-        } else if (brickSet[indexOfObject]['t'] == "sp") {
+        } else if (indexOfSameXObj['t'] == "sp") {
           world.add(Spike(position: Vector2(x, y)));
-        } else if (brickSet[indexOfObject]['t'] == "s") {
+        } else if (indexOfSameXObj['t'] == "s") {
           world.add(Star(position: Vector2(x, y)));
         }
       }
+    }
 
-
-    startFrom = count;
-    count = count * 2;
+    startFrom = count + brickSet.length;
+    count = (count * 2) + brickSet.length;
   }
 }
