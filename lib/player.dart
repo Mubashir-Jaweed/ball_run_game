@@ -51,6 +51,7 @@ class Player extends PositionComponent with CollisionCallbacks {
   void update(double dt) {
     // TODO: implement update
     super.update(dt);
+    
     position += _velocity * dt;
     _velocity.y += _gravity * dt;
     if (_isBoostOn) {
@@ -113,11 +114,11 @@ class Player extends PositionComponent with CollisionCallbacks {
     }
 
     if (other is Spike) {
-      print('game over');
+      // print('game over');
       gameOverWithEffect();
     }
     if (other is Star) {
-      print('point');
+      // print('point');
       other.showCollectEffect();
     }
   }

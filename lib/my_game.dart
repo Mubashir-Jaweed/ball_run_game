@@ -17,6 +17,10 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
   late Player myPlayer;
   late Brick brick;
+  late Brick _latestBrick;
+   int startFrom = 0;
+    int count = 10;
+    
 
   @override
   Future<void> onLoad() async {
@@ -50,6 +54,10 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       playerX,
       playerY + 20,
     );
+
+    if (playerX + 200 >= _latestBrick.x) {
+     generateGameComponents();
+    }
   }
 
   @override
@@ -61,6 +69,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
   void _initializeGame() {
     camera.moveTo(Vector2(0, 0));
+  camera.viewfinder.zoom = 0.1;
 
     world.add(
       myPlayer = Player(
@@ -72,37 +81,14 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     world.add(Brick(position: Vector2(200, 1020)));
     world.add(Brick(position: Vector2(300, 1020)));
 
-    // loadLevel(levels[1]);
     generateGameComponents();
   }
 
-  void loadLevel(List<List<Map<String, dynamic>>> levelData) {
-    int startFrom = 0;
-    int count = levelData.length - 1;
-    for (int i = startFrom; i <= count; i++) {
-      for (var object in levelData[i]) {
-        double x = object['p']['x'];
-        double y = object['p']['y'] + 1000;
-
-        if (object['t'] == "br") {
-          world.add(Brick(position: Vector2(x, y)));
-        } else if (object['t'] == "bo") {
-          world.add(Boost(position: Vector2(x, y)));
-        } else if (object['t'] == "sp") {
-          world.add(Spike(position: Vector2(x, y)));
-        } else if (object['t'] == "s") {
-          world.add(Star(position: Vector2(x, y)));
-        }
-      }
-    }
-    startFrom = count;
-    count = count * 2;
-  }
-
   void generateGameComponents() {
-    int startFrom = 0;
-    int count = 5;
-    late Brick _latestBrick;
+    print('count = $count');
+    print('startFrom = $startFrom');
+    print('total : ${count - startFrom}');
+   
     double startFromX = 400;
 
 
@@ -133,7 +119,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
         double x = startFromX + (j * 100) + (indexOfSameXObj['p']['x'] * 100);
 
         if (indexOfSameXObj['t'] == "br") {
-          world.add(Brick(position: Vector2(x, y)));
+           world.add(_latestBrick =  Brick(position: Vector2(x, y)));
         } else if (indexOfSameXObj['t'] == "bo") {
           world.add(Boost(position: Vector2(x, y)));
         } else if (indexOfSameXObj['t'] == "sp") {
@@ -145,6 +131,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     }
 
     startFrom = count + brickSet.length;
-    count = (count * 2) + brickSet.length;
+    count = count + brickSet.length;
   }
 }
