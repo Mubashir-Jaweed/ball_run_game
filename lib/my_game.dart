@@ -19,7 +19,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   late Brick brick;
   late Brick _latestBrick;
    int startFrom = 0;
-    int count = 10;
+    int count = 2;
     
 
   @override
@@ -132,6 +132,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     }
 
     startFrom = count + brickSet.length;
-    count = startFrom +10;
+    count = startFrom +2;
   }
 }
