@@ -12,6 +12,17 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
+
+
+
+
+enum gameState {
+  playing,
+  pause,
+  gameOver,
+  menu
+}
+
 class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   Color backgroundColor() => const Color(0xff222222);
 
@@ -20,6 +31,9 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   late Brick _latestBrick;
    int startFrom = 0;
     int count = 2;
+    gameState currentState = gameState.menu;
+    final ValueNotifier<int> currentScore = ValueNotifier<int>(0);
+
     
 
   @override
@@ -45,7 +59,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   void update(double dt) {
     super.update(dt);
 
-    final cameraX = camera.viewfinder.position.x;
     final playerX = myPlayer.position.x;
     final playerY = myPlayer.position.y;
     const double offset = 100.0;
@@ -133,5 +146,22 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     startFrom = count + brickSet.length;
     count = startFrom +2;
+  }
+
+  void gameOver() {
+    currentState = gameState.gameOver;
+  }
+  void pauseGame() {
+    currentState = gameState.pause;
+    pauseEngine();
+  }
+  void resumeGame() {
+    currentState = gameState.playing;
+    resumeEngine();
+  }
+  void startGame() {
+    currentState = gameState.playing;
+    currentScore.value = 0;
+    _initializeGame(); 
   }
 }
