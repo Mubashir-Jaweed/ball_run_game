@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
+import 'package:ball_run/my_game.dart';
 import 'package:ball_run/spike.dart';
 import 'package:ball_run/star.dart';
 import 'package:flame/collisions.dart';
@@ -10,7 +11,7 @@ import 'package:flame/components.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 
-class Player extends PositionComponent with CollisionCallbacks {
+class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallbacks {
   Player({
     required super.position,
     this.playerRadius = 8,
@@ -57,7 +58,10 @@ class Player extends PositionComponent with CollisionCallbacks {
     if (_isBoostOn) {
       _velocity.x = _boostSpeed;
     } else {
+      if(gameRef.currentState.value == gameState.playing){
       _velocity.x = _moveSpeed;
+
+      }
     }
 
     parent!.add(ParticleSystemComponent(
@@ -74,6 +78,7 @@ class Player extends PositionComponent with CollisionCallbacks {
 
     if (position.y > 1300) {
       gameOverWithEffect();
+      gameRef.gameOver();
     }
   }
 
@@ -116,10 +121,12 @@ class Player extends PositionComponent with CollisionCallbacks {
     if (other is Spike) {
       // print('game over');
       gameOverWithEffect();
+      gameRef.gameOver();
     }
     if (other is Star) {
       // print('point');
       other.showCollectEffect();
+      gameRef.increaseScore();
     }
   }
 

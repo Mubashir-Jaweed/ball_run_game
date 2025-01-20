@@ -12,16 +12,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-
-
-
-
-enum gameState {
-  playing,
-  pause,
-  gameOver,
-  menu
-}
+enum gameState { playing, pause, gameOver, menu }
 
 class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   Color backgroundColor() => const Color(0xff222222);
@@ -29,12 +20,10 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   late Player myPlayer;
   late Brick brick;
   late Brick _latestBrick;
-   int startFrom = 0;
-    int count = 2;
-    gameState currentState = gameState.menu;
-    final ValueNotifier<int> currentScore = ValueNotifier<int>(0);
-
-    
+  int startFrom = 0;
+  int count = 2;
+  final ValueNotifier<int> currentScore = ValueNotifier<int>(0);
+  final ValueNotifier<gameState> currentState = ValueNotifier<gameState>(gameState.menu);
 
   @override
   Future<void> onLoad() async {
@@ -69,7 +58,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     );
 
     if (playerX + 200 >= _latestBrick.x) {
-     generateGameComponents();
+      generateGameComponents();
     }
   }
 
@@ -82,13 +71,15 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
   void _initializeGame() {
     camera.moveTo(Vector2(0, 0));
-  // camera.viewfinder.zoom = 0.1;
+    // camera.viewfinder.zoom = 0.1;
 
     world.add(
       myPlayer = Player(
         position: Vector2(0, 1000),
       ),
     );
+    world.add(Brick(position: Vector2(-100, 1020)));
+    world.add(Brick(position: Vector2(-200, 1020)));
     world.add(Brick(position: Vector2(0, 1020)));
     world.add(Brick(position: Vector2(100, 1020)));
     world.add(Brick(position: Vector2(200, 1020)));
@@ -98,13 +89,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   }
 
   void generateGameComponents() {
-    print('count = $count');
-    print('startFrom = $startFrom');
-    print('total : ${count - startFrom}');
-   
     double startFromX = 400;
-
-
     // generate random bricks
     for (int i = startFrom; i < count; i++) {
       var randomY = Random().nextInt(3);
@@ -116,7 +101,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
                 1000 + (randomY * 20))),
       );
     }
-
 
     // add random built-in brick from levels
     var randomBrickSet = Random().nextInt(levels.length);
@@ -131,9 +115,8 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
         double y = indexOfSameXObj['p']['y'] + _latestBrick.y;
         double x = startFromX + (j * 100) + (indexOfSameXObj['p']['x'] * 100);
 
-
         if (indexOfSameXObj['t'] == "br") {
-           world.add(  Brick(position: Vector2(x, y)));
+          world.add(Brick(position: Vector2(x, y)));
         } else if (indexOfSameXObj['t'] == "bo") {
           world.add(Boost(position: Vector2(x, y)));
         } else if (indexOfSameXObj['t'] == "sp") {
@@ -145,23 +128,31 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     }
 
     startFrom = count + brickSet.length;
-    count = startFrom +2;
+    count = startFrom + 2;
+  }
+
+  void increaseScore() {
+    currentScore.value++;
+    print(currentScore.value);
   }
 
   void gameOver() {
-    currentState = gameState.gameOver;
+    currentState.value = gameState.gameOver;
+    print('gameOver');
   }
+
   void pauseGame() {
-    currentState = gameState.pause;
+    currentState.value = gameState.pause;
     pauseEngine();
   }
+
   void resumeGame() {
-    currentState = gameState.playing;
+    currentState.value = gameState.playing;
     resumeEngine();
   }
+
   void startGame() {
-    currentState = gameState.playing;
+    currentState.value = gameState.playing;
     currentScore.value = 0;
-    _initializeGame(); 
   }
 }
