@@ -57,8 +57,9 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       playerY + 20,
     );
 
-    if (playerX + 200 >= _latestBrick.x) {
+    if (playerX + 100 >= _latestBrick.x) {
       generateGameComponents();
+      removeAllPositionComponents();
     }
   }
 
@@ -155,4 +156,35 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     currentState.value = gameState.playing;
     currentScore.value = 0;
   }
+
+void removeAllPositionComponents() {
+
+  final bricks = world.children.whereType<Brick>(); 
+  final boosts = world.children.whereType<Boost>(); 
+  final spikes = world.children.whereType<Spike>(); 
+
+  final bricksShouldBeRemoved = max(bricks.length - 20, 0);
+  final boostsShouldBeRemoved = max(boosts.length - 5, 0);
+  final spikesShouldBeRemoved = max(spikes.length - 5, 0);
+  
+    bricks.take(bricksShouldBeRemoved).forEach((brick) {
+      if(brick.position.x + 100 < myPlayer.position.x){
+      brick.removeFromParent();}
+    });
+    spikes.take(spikesShouldBeRemoved).forEach((spike) {
+      if(spike.position.x + 100 < myPlayer.position.x){
+      spike.removeFromParent();}
+    });
+    boosts.take(boostsShouldBeRemoved).forEach((boost) {
+      if(boost.position.x + 100 < myPlayer.position.x){
+      boost.removeFromParent();}
+    });
+
+
+    
+    // print(bricks.length);
+}
+
+
+  
 }
