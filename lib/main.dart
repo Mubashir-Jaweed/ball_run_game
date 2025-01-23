@@ -12,7 +12,6 @@ void main() {
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -43,6 +42,8 @@ class _HomePageState extends State<HomePage> {
                 return Align(
                   alignment: Alignment.center,
                   child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
                     decoration: (currentState == gameState.gameOver ||
                             currentState == gameState.pause)
                         ? BoxDecoration(
@@ -53,6 +54,7 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       spacing: 300,
                       children: [
+                        if (currentState != gameState.gameOver)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -84,8 +86,7 @@ class _HomePageState extends State<HomePage> {
                                       size: 30,
                                     ),
                                   )
-                                : currentState != gameState.gameOver
-                                    ? IconButton(
+                                : IconButton(
                                         onPressed: () {
                                           _myGame.pauseGame();
                                         },
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                                           size: 30,
                                         ),
                                       )
-                                    : SizedBox.shrink(),
+                                    
                           ],
                         ),
                         if (currentState == gameState.pause)
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                                   spacing: 20,
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {_myGame.menu();},
                                       icon: Icon(Icons.home),
                                       color: Colors.white,
                                       iconSize: 35,
@@ -140,9 +141,168 @@ class _HomePageState extends State<HomePage> {
                                 )
                               ],
                             ),
-                          )
+                          ),
 
-                        // else if(currentState == gameState.gameOver)
+                        if(currentState == gameState.gameOver)
+                        Expanded(
+                          child: Container(
+                          child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white10,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          _myGame.menu();
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_back_rounded,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white10,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      child: InkWell(
+                                        onTap: () {},
+                                        child: Image.asset(
+                                          '/images/noads.png',
+                                          height: 40,
+                                          width: 40,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const Text(
+                                  'Bounce \n Worm',
+                                  style: TextStyle(
+                                    fontSize: 60,
+                                    height: 0.9,
+                                    letterSpacing: 1,
+                                    color: Color.fromARGB(255, 255, 196, 0),
+                                    shadows: [
+                                      Shadow(
+                                          offset: Offset(0, 0),
+                                          blurRadius: 5,
+                                          color: Colors.black),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Column(
+                              spacing: 50,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text('Score : ${_myGame.currentScore.value}',
+                                    style: TextStyle(
+                                      fontSize: 40,
+                                      color: Colors.white,
+                                       shadows: [
+                                      Shadow(
+                                          offset: Offset(0, 0),
+                                          blurRadius: 5,
+                                          color: Colors.black),
+                                    ],
+                                    ),),
+                                    Text('Best Score : ${_myGame.currentScore.value + 5}',
+                                    style: TextStyle(
+                                      fontSize: 40,
+                                      color: Colors.amberAccent,
+                                       shadows: [
+                                      Shadow(
+                                          offset: Offset(0, 0),
+                                          blurRadius: 5,
+                                          color: Colors.black),
+                                    ],
+                                    ),)
+                                  ],
+                                ),
+                                
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  spacing: 15,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {_myGame.menu();},
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(100),
+                                            color: Colors.white10
+                                          ),
+                                          padding: EdgeInsets.all(10),
+                                          child: Icon(Icons.home,size: 35,color: Colors.white,),
+                                      ),
+                                    ),
+                                    InkWell(
+                                  onTap: () {
+                                    _myGame.restartGame();
+                                  },
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        color: Colors.white12,
+                                      ),
+                                      child: Icon(
+                                        Icons.refresh_rounded,
+                                        color: Colors.white,
+                                        size: 150,
+                                      )),
+                                ),
+                                    InkWell(
+                                      onTap: (){},
+                                      child: 
+                                       Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(100),
+                                          color: Colors.white10
+                                        ),
+                                        padding: EdgeInsets.all(15),
+                                         child: Image.asset(
+                                          '/images/advideo.png',
+                                          height: 25,
+                                          width: 25,
+                                                                               ),
+                                       ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                            Text(
+                              'Made with ❤️',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w100,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                                                ),
+                                              ),
+                        ),
+
                       ],
                     ),
                   ),

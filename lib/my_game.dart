@@ -156,6 +156,19 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     currentState.value = gameState.playing;
     currentScore.value = 0;
   }
+  void menu() {
+    // remove all game components
+    currentState.value = gameState.menu;
+    currentScore.value = 0;
+    // _initializeGame();
+
+  }
+  void restartGame() {
+    // remove all game components
+    currentState.value = gameState.playing;
+    currentScore.value = 0;
+    // _initializeGame();
+  }
 
 void removeAllPositionComponents() {
 
