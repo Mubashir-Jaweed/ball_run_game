@@ -20,10 +20,11 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   late Player myPlayer;
   late Brick brick;
   late Brick _latestBrick;
-  int startFrom = 0;
-  int count = 2;
+  late int startFrom;
+  late int count;
   final ValueNotifier<int> currentScore = ValueNotifier<int>(0);
-  final ValueNotifier<gameState> currentState = ValueNotifier<gameState>(gameState.menu);
+  final ValueNotifier<gameState> currentState =
+      ValueNotifier<gameState>(gameState.menu);
 
   @override
   Future<void> onLoad() async {
@@ -59,7 +60,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     if (playerX + 100 >= _latestBrick.x) {
       generateGameComponents();
-      removeAllPositionComponents();
+      removeAllPreviousComponents();
     }
   }
 
@@ -71,6 +72,9 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   }
 
   void _initializeGame() {
+    startFrom = 0;
+    count = 5;
+    print('initialize game');
     camera.moveTo(Vector2(0, 0));
     // camera.viewfinder.zoom = 0.1;
 
@@ -90,6 +94,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   }
 
   void generateGameComponents() {
+
     double startFromX = 400;
     // generate random bricks
     for (int i = startFrom; i < count; i++) {
@@ -129,12 +134,11 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     }
 
     startFrom = count + brickSet.length;
-    count = startFrom + 2;
+    count = startFrom + 5;
   }
 
   void increaseScore() {
     currentScore.value++;
-    print(currentScore.value);
   }
 
   void gameOver() {
@@ -156,48 +160,55 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     currentState.value = gameState.playing;
     currentScore.value = 0;
   }
+
   void menu() {
-    // remove all game components
+    resumeEngine();
+    removeAllGameComponents();
     currentState.value = gameState.menu;
     currentScore.value = 0;
-    // _initializeGame();
-
+    _initializeGame();
   }
+
   void restartGame() {
-    // remove all game components
+    removeAllGameComponents();
     currentState.value = gameState.playing;
     currentScore.value = 0;
-    // _initializeGame();
+    _initializeGame();
   }
 
-void removeAllPositionComponents() {
+  void removeAllPreviousComponents() {
+    final bricks = world.children.whereType<Brick>();
+    final boosts = world.children.whereType<Boost>();
+    final spikes = world.children.whereType<Spike>();
 
-  final bricks = world.children.whereType<Brick>(); 
-  final boosts = world.children.whereType<Boost>(); 
-  final spikes = world.children.whereType<Spike>(); 
+    final bricksShouldBeRemoved = max(bricks.length - 20, 0);
+    final boostsShouldBeRemoved = max(boosts.length - 5, 0);
+    final spikesShouldBeRemoved = max(spikes.length - 5, 0);
 
-  final bricksShouldBeRemoved = max(bricks.length - 20, 0);
-  final boostsShouldBeRemoved = max(boosts.length - 5, 0);
-  final spikesShouldBeRemoved = max(spikes.length - 5, 0);
-  
     bricks.take(bricksShouldBeRemoved).forEach((brick) {
-      if(brick.position.x + 100 < myPlayer.position.x){
-      brick.removeFromParent();}
+      if (brick.position.x + 100 < myPlayer.position.x) {
+        brick.removeFromParent();
+      }
     });
     spikes.take(spikesShouldBeRemoved).forEach((spike) {
-      if(spike.position.x + 100 < myPlayer.position.x){
-      spike.removeFromParent();}
+      if (spike.position.x + 100 < myPlayer.position.x) {
+        spike.removeFromParent();
+      }
     });
     boosts.take(boostsShouldBeRemoved).forEach((boost) {
-      if(boost.position.x + 100 < myPlayer.position.x){
-      boost.removeFromParent();}
+      if (boost.position.x + 100 < myPlayer.position.x) {
+        boost.removeFromParent();
+      }
     });
 
-
-    
     // print(bricks.length);
-}
+  }
 
-
-  
+  void removeAllGameComponents() {
+    final allComp = world.children.whereType<PositionComponent>();
+    print(allComp.length);
+    allComp.forEach((comp) {
+      comp.removeFromParent();
+    });
+  }
 }

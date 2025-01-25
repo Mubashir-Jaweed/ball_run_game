@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: (currentState == gameState.gameOver ||
                             currentState == gameState.pause)
                         ? BoxDecoration(
-                            color: Colors.black45,
+                            color: Colors.black54,
                           )
                         : null,
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
