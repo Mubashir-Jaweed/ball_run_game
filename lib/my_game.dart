@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
+import 'package:ball_run/controllers/home_controllers.dart';
 import 'package:ball_run/data/levels.dart';
 import 'package:ball_run/player.dart';
 import 'package:ball_run/spike.dart';
@@ -23,6 +24,8 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   late int startFrom;
   late int count;
   final ValueNotifier<int> currentScore = ValueNotifier<int>(0);
+  HomeControllers homeController = HomeControllers();
+  late int bestScore;
   final ValueNotifier<gameState> currentState =
       ValueNotifier<gameState>(gameState.menu);
 
@@ -34,12 +37,10 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     camera.viewport =
         FixedResolutionViewport(resolution: Vector2(size.x, size.y));
 
-    // camera.viewfinder.zoom = 0.1;
   }
 
   @override
   void onMount() {
-    // TODO: implement onMount
     super.onMount();
     // debugMode = true;
     _initializeGame();
@@ -51,7 +52,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     final playerX = myPlayer.position.x;
     final playerY = myPlayer.position.y;
-    const double offset = 100.0;
 
     camera.viewfinder.position = Vector2(
       playerX,
@@ -71,10 +71,10 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     super.onTapDown(event);
   }
 
-  void _initializeGame() {
+  void _initializeGame()async {
+   
     startFrom = 0;
     count = 5;
-    print('initialize game');
     camera.moveTo(Vector2(0, 0));
     // camera.viewfinder.zoom = 0.1;
 
@@ -91,6 +91,8 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     world.add(Brick(position: Vector2(300, 1020)));
 
     generateGameComponents();
+     await homeController.init();
+    bestScore = await homeController.getBestScore();
   }
 
   void generateGameComponents() {
@@ -141,8 +143,12 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     currentScore.value++;
   }
 
-  void gameOver() {
+  void gameOver() async{
     currentState.value = gameState.gameOver;
+    if(currentScore.value > bestScore){
+      bestScore = currentScore.value;
+      await homeController.setBestScore(currentScore.value);
+    }
     print('gameOver');
   }
 
@@ -206,7 +212,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
   void removeAllGameComponents() {
     final allComp = world.children.whereType<PositionComponent>();
-    print(allComp.length);
     allComp.forEach((comp) {
       comp.removeFromParent();
     });

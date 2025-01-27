@@ -1,3 +1,4 @@
+import 'package:ball_run/controllers/home_controllers.dart';
 import 'package:ball_run/my_game.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late MyGame _myGame;
+  HomeControllers homeController = HomeControllers();
 
   @override
   void initState() {
     _myGame = MyGame();
     super.initState();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -225,7 +229,19 @@ class _HomePageState extends State<HomePage> {
                                           color: Colors.black),
                                     ],
                                     ),),
-                                    Text('Best Score : ${_myGame.currentScore.value + 5}',
+                                    if(_myGame.bestScore == _myGame.currentScore.value)
+                                    Text('New Recored : ${_myGame.bestScore}',
+                                    style: TextStyle(
+                                      fontSize: 40,
+                                      color: Colors.amberAccent,
+                                       shadows: [
+                                      Shadow(
+                                          offset: Offset(0, 0),
+                                          blurRadius: 5,
+                                          color: Colors.black),
+                                    ],
+                                    ),)else
+                                    Text('Best Score : ${_myGame.bestScore}',
                                     style: TextStyle(
                                       fontSize: 40,
                                       color: Colors.amberAccent,
