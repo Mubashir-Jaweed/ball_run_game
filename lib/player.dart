@@ -63,12 +63,14 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
 
       }
     }
+   
+   
 
     parent!.add(ParticleSystemComponent(
         position: position.clone(),
         particle: Particle.generate(
           count: 1,
-          lifespan: 0.2,
+          lifespan: 1.5,
           generator: (i) => AcceleratedParticle(
             acceleration: Vector2.all(1),
             child: CircleParticle(
@@ -87,16 +89,20 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
     // TODO: implement render
     super.render(canvas);
 
-    // canvas.drawCircle(
-    //   (size / 2).toOffset(),
-    //   playerRadius,
-    //   Paint()..color = _color,
-    // );
+   
 
     _playerSprite.render(
       canvas,
       size: size,
     );
+
+    // for (var positions in playerPositions) {
+    //    canvas.drawCircle(
+    //   (size / 2).toOffset(),
+    //   playerRadius,
+    //   Paint()..color = _color,
+    // );
+    // }
   }
 
   @override

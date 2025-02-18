@@ -36,7 +36,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     add(world);
     camera.viewport =
         FixedResolutionViewport(resolution: Vector2(size.x, size.y));
-
   }
 
   @override
@@ -49,19 +48,17 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   @override
   void update(double dt) {
     super.update(dt);
-
     final playerX = myPlayer.position.x;
     final playerY = myPlayer.position.y;
-
     camera.viewfinder.position = Vector2(
       playerX,
       playerY + 20,
     );
-
     if (playerX + 100 >= _latestBrick.x) {
       generateGameComponents();
       removeAllPreviousComponents();
     }
+
   }
 
   @override
@@ -71,8 +68,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     super.onTapDown(event);
   }
 
-  void _initializeGame()async {
-   
+  void _initializeGame() async {
     startFrom = 0;
     count = 5;
     camera.moveTo(Vector2(0, 0));
@@ -83,6 +79,12 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
         position: Vector2(0, 1000),
       ),
     );
+
+
+ 
+   
+
+   
     world.add(Brick(position: Vector2(-100, 1020)));
     world.add(Brick(position: Vector2(-200, 1020)));
     world.add(Brick(position: Vector2(0, 1020)));
@@ -91,12 +93,11 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     world.add(Brick(position: Vector2(300, 1020)));
 
     generateGameComponents();
-     await homeController.init();
+    await homeController.init();
     bestScore = await homeController.getBestScore();
   }
 
   void generateGameComponents() {
-
     double startFromX = 400;
     // generate random bricks
     for (int i = startFrom; i < count; i++) {
@@ -143,9 +144,9 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     currentScore.value++;
   }
 
-  void gameOver() async{
+  void gameOver() async {
     currentState.value = gameState.gameOver;
-    if(currentScore.value > bestScore){
+    if (currentScore.value > bestScore) {
       bestScore = currentScore.value;
       await homeController.setBestScore(currentScore.value);
     }
@@ -216,4 +217,5 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       comp.removeFromParent();
     });
   }
+
 }

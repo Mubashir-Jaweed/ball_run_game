@@ -1,7 +1,10 @@
 import 'package:ball_run/controllers/home_controllers.dart';
 import 'package:ball_run/my_game.dart';
+import 'package:ball_run/components/setting.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+
+
 
 void main() {
   runApp(MaterialApp(
@@ -353,7 +356,14 @@ class _HomePageState extends State<HomePage> {
                                         borderRadius:
                                             BorderRadius.circular(50)),
                                     child: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        showDialog(context: context, builder: (BuildContext context) {
+                                          return Dialog(
+                                            backgroundColor: Colors.transparent,
+                                            child: Setting(),
+                                          );
+                                        },);
+                                      },
                                       icon: Icon(
                                         Icons.settings_rounded,
                                         color: Colors.white,
