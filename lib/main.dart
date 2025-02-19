@@ -1,6 +1,6 @@
 import 'package:ball_run/controllers/home_controllers.dart';
 import 'package:ball_run/my_game.dart';
-import 'package:ball_run/components/setting.dart';
+import 'package:ball_run/widgets/setting.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
@@ -336,7 +336,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       height: double.infinity,
                       padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                          EdgeInsets.all( 15),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -357,12 +357,12 @@ class _HomePageState extends State<HomePage> {
                                             BorderRadius.circular(50)),
                                     child: IconButton(
                                       onPressed: () {
-                                        showDialog(context: context, builder: (BuildContext context) {
-                                          return Dialog(
-                                            backgroundColor: Colors.transparent,
-                                            child: Setting(),
-                                          );
-                                        },);
+                                       showDialog(context: context, builder: (context) {
+                                         return Material(
+                                          type: MaterialType.transparency,
+                                          child: Setting(),
+                                         );
+                                       },);
                                       },
                                       icon: Icon(
                                         Icons.settings_rounded,
