@@ -1,14 +1,22 @@
+import 'package:ball_run/controllers/home_controllers.dart';
+import 'package:ball_run/my_game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Setting extends StatefulWidget {
-  const Setting({super.key});
+  final HomeControllers homeControllers;
+  const Setting({super.key, required this.homeControllers});
 
   @override
   State<Setting> createState() => _SettingState();
 }
 
 class _SettingState extends State<Setting> {
+
+  void deleteAccount() async {
+    widget.homeControllers.deleteAccount();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,7 +55,7 @@ class _SettingState extends State<Setting> {
                   fontSize: 40,
                   height: 0.9,
                   letterSpacing: 2,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 255, 196, 0),
                   decoration: TextDecoration.underline,
                   decorationColor: Colors.white,
                   decorationStyle: TextDecorationStyle.double,
@@ -95,7 +103,7 @@ class _SettingState extends State<Setting> {
                   fontSize: 40,
                   height: 0.9,
                   letterSpacing: 2,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 255, 196, 0),
                   decoration: TextDecoration.underline,
                   decorationColor: Colors.white,
                   decorationStyle: TextDecorationStyle.double,
@@ -131,7 +139,7 @@ class _SettingState extends State<Setting> {
                   fontSize: 40,
                   height: 0.9,
                   letterSpacing: 2,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 255, 196, 0),
                   decoration: TextDecoration.underline,
                   decorationColor: Colors.white,
                   decorationStyle: TextDecorationStyle.double,
@@ -146,7 +154,44 @@ class _SettingState extends State<Setting> {
               SizedBox(
                 height: 20,
               ),
+              Text(
+                'Delete account',
+                style: TextStyle(
+                  fontSize: 32,
+                  height: 1,
+                  letterSpacing: 2,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                onTap: () {
+                  deleteAccount();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 25,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.red),
+                  child: Text(
+                    'Delete',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+              )
             ],
+          ),
+          SizedBox(
+            height: 1,
           )
         ],
       ),

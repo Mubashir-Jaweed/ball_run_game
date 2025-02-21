@@ -16,7 +16,11 @@ import 'package:flutter/material.dart';
 enum gameState { playing, pause, gameOver, menu }
 
 class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
+
+   final HomeControllers homeControllers;
+   MyGame({required this.homeControllers});
   Color backgroundColor() => const Color(0xff222222);
+
 
   late Player myPlayer;
   late Brick brick;
@@ -24,7 +28,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   late int startFrom;
   late int count;
   final ValueNotifier<int> currentScore = ValueNotifier<int>(0);
-  HomeControllers homeController = HomeControllers();
   late int bestScore;
   final ValueNotifier<gameState> currentState =
       ValueNotifier<gameState>(gameState.menu);
@@ -42,7 +45,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   void onMount() {
     super.onMount();
     // debugMode = true;
-    _initializeGame();
+    initializeGame();
   }
 
   @override
@@ -68,7 +71,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     super.onTapDown(event);
   }
 
-  void _initializeGame() async {
+  void initializeGame() async {
     startFrom = 0;
     count = 5;
     camera.moveTo(Vector2(0, 0));
@@ -80,11 +83,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       ),
     );
 
-
- 
-   
-
-   
     world.add(Brick(position: Vector2(-100, 1020)));
     world.add(Brick(position: Vector2(-200, 1020)));
     world.add(Brick(position: Vector2(0, 1020)));
@@ -93,8 +91,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     world.add(Brick(position: Vector2(300, 1020)));
 
     generateGameComponents();
-    await homeController.init();
-    bestScore = await homeController.getBestScore();
+   
   }
 
   void generateGameComponents() {
@@ -148,7 +145,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     currentState.value = gameState.gameOver;
     if (currentScore.value > bestScore) {
       bestScore = currentScore.value;
-      await homeController.setBestScore(currentScore.value);
+      await homeControllers.setBestScore(currentScore.value);
     }
     print('gameOver');
   }
@@ -163,7 +160,9 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     resumeEngine();
   }
 
-  void startGame() {
+  void startGame()async {
+     bestScore = await homeControllers.getBestScore();
+    print(bestScore);
     currentState.value = gameState.playing;
     currentScore.value = 0;
   }
@@ -173,14 +172,14 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     removeAllGameComponents();
     currentState.value = gameState.menu;
     currentScore.value = 0;
-    _initializeGame();
+    initializeGame();
   }
 
   void restartGame() {
     removeAllGameComponents();
     currentState.value = gameState.playing;
     currentScore.value = 0;
-    _initializeGame();
+    initializeGame();
   }
 
   void removeAllPreviousComponents() {
