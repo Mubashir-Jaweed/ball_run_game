@@ -1,6 +1,4 @@
 import 'package:ball_run/controllers/home_controllers.dart';
-import 'package:ball_run/my_game.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Setting extends StatefulWidget {
@@ -168,8 +166,9 @@ class _SettingState extends State<Setting> {
                 height: 10,
               ),
               InkWell(
-                onTap: () {
-                  deleteAccount();
+                onTap: ()async {
+                 deleteAccount();
+                 Navigator.of(context).pop();
                 },
                 child: Container(
                   padding: EdgeInsets.symmetric(

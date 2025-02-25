@@ -5,6 +5,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   HomeControllers homeController = HomeControllers();
   await homeController.init();
 
@@ -164,43 +165,46 @@ class _HomePageState extends State<HomePage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.white10,
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                            child: IconButton(
-                                              onPressed: () {
-                                                _myGame.menu();
-                                              },
-                                              icon: Icon(
-                                                Icons.arrow_back_rounded,
-                                                color: Colors.white,
-                                                size: 30,
+                                      Container(
+                                         padding: EdgeInsets.only(top: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white10,
+                                                  borderRadius:
+                                                      BorderRadius.circular(50)),
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  _myGame.menu();
+                                                },
+                                                icon: Icon(
+                                                  Icons.arrow_back_rounded,
+                                                  color: Colors.white,
+                                                  size: 30,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                color: Colors.white10,
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                            child: InkWell(
-                                              onTap: () {},
-                                              child: Image.asset(
-                                                '/images/noads.png',
-                                                height: 40,
-                                                width: 40,
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white10,
+                                                  borderRadius:
+                                                      BorderRadius.circular(50)),
+                                              child: InkWell(
+                                                onTap: () {},
+                                                child: Image.asset(
+                                                  'assets/images/noads.png',
+                                                  height: 40,
+                                                  width: 40,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                       const Text(
                                         'Bounce \n Worm',
@@ -217,6 +221,7 @@ class _HomePageState extends State<HomePage> {
                                                 color: Colors.black),
                                           ],
                                         ),
+                                        textAlign: TextAlign.center,
                                       ),
                                     ],
                                   ),
@@ -320,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                                                   color: Colors.white10),
                                               padding: EdgeInsets.all(15),
                                               child: Image.asset(
-                                                '/images/advideo.png',
+                                                'assets/images/advideo.png',
                                                 height: 25,
                                                 width: 25,
                                               ),
@@ -364,50 +369,53 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white10,
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return Material(
-                                              type: MaterialType.transparency,
-                                              child: Setting(homeControllers: widget.homeControllers,),
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: Icon(
-                                        Icons.settings_rounded,
-                                        color: Colors.white,
-                                        size: 30,
+                              Container(
+                                padding: EdgeInsets.only(top: 15),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white10,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return Material(
+                                                type: MaterialType.transparency,
+                                                child: Setting(homeControllers: widget.homeControllers,),
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: Icon(
+                                          Icons.settings_rounded,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.white10,
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    child: InkWell(
-                                      onTap: () {},
-                                      child: Image.asset(
-                                        '/images/noads.png',
-                                        height: 40,
-                                        width: 40,
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white10,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                      child: InkWell(
+                                        onTap: () {},
+                                        child: Image.asset(
+                                          'assets/images/noads.png', 
+                                          height: 40,
+                                          width: 40,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               const Text(
                                 'Bounce \n Worm',
@@ -423,6 +431,7 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.black),
                                   ],
                                 ),
+                                textAlign: TextAlign.center,
                               ),
                             ],
                           ),

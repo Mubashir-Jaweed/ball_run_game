@@ -11,6 +11,7 @@ class Boost extends PositionComponent with CollisionCallbacks {
   final double _radius = 15;
   late Sprite _boostSprite;
 
+  @override
   void onMount() {
     size = Vector2.all(_radius * 2);
     anchor = Anchor.center;

@@ -19,8 +19,8 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
           priority: 20,
         );
 
-  Color _color = Color(0xFF009AFA);
-  Vector2 _velocity = Vector2.zero();
+  final Color _color = Color(0xFF009AFA);
+  final Vector2 _velocity = Vector2.zero();
   final double _gravity = 980.0;
   final double _jumpSpeed = 350.0;
   final double _moveSpeed = 200.0;
@@ -30,6 +30,7 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
   int _jumpCount = 2;
   late Sprite _playerSprite;
 
+  @override
   void onMount() {
     size = Vector2.all(playerRadius * 2);
     anchor = Anchor.center;

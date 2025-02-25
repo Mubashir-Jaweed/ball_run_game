@@ -19,6 +19,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
    final HomeControllers homeControllers;
    MyGame({required this.homeControllers});
+  @override
   Color backgroundColor() => const Color(0xff222222);
 
 
@@ -212,9 +213,9 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
   void removeAllGameComponents() {
     final allComp = world.children.whereType<PositionComponent>();
-    allComp.forEach((comp) {
+    for (var comp in allComp) {
       comp.removeFromParent();
-    });
+    }
   }
 
 }

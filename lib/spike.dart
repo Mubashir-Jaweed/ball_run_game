@@ -14,6 +14,7 @@ class Spike extends PositionComponent with CollisionCallbacks {
   late Sprite _spikeSprite;
 
 
+  @override
   void onMount() {
     size = Vector2.all(_radius * 2);
     anchor = Anchor.center;

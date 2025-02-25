@@ -14,6 +14,7 @@ class Star extends PositionComponent with CollisionCallbacks {
   final double _radius = 12;
   late Sprite _starSprite;
 
+  @override
   void onMount() {
     size = Vector2.all(_radius * 2);
     anchor = Anchor.center;
