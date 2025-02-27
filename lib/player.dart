@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallbacks {
   Player({
     required super.position,
-    this.playerRadius = 8,
+    this.playerRadius = 10,
   }) : super(
           priority: 20,
         );
@@ -29,6 +29,10 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
   bool _isBoostOn = false;
   int _jumpCount = 2;
   late Sprite _playerSprite;
+  final List<Map<String, dynamic>> _tailPositions = [];
+  double _timeSinceLastSegment = 0.0;
+  static const double _tailSegmentInterval = 0.05;
+  static const double _tailFadeDuration = 0.5;
 
   @override
   void onMount() {
@@ -65,13 +69,29 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
 
       }
     }
-   
-   
-
     if (position.y > 1300) {
       gameOverWithEffect();
       gameRef.gameOver();
     }
+
+
+     _timeSinceLastSegment += dt;
+    if (_timeSinceLastSegment >= _tailSegmentInterval) {
+      _tailPositions.add({
+        'position': position.clone(),
+        'alpha': 1.0,
+      });
+      _timeSinceLastSegment = 0.0;
+      
+      // Keep tail length manageable
+      if (_tailPositions.length > 10) {
+        _tailPositions.removeAt(0);
+      }
+    }
+
+    // Update alpha values and remove expired segments
+    _tailPositions.forEach((segment) => segment['alpha'] -= dt / _tailFadeDuration);
+    _tailPositions.removeWhere((segment) => segment['alpha'] <= 0);
   }
 
   @override
@@ -79,10 +99,19 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
     // TODO: implement render
     super.render(canvas);
 
-    _playerSprite.render(
-      canvas,
-      size: size,
-    );
+    for (final segment in _tailPositions) {
+      final pos = (segment['position'] as Vector2) - position;
+      final alpha = segment['alpha'] as double;
+      
+      canvas.drawCircle(
+        (size /2+ pos).toOffset(),
+        playerRadius * (0.3 + 0.7 * alpha), 
+        Paint()
+          ..color = _color.withOpacity(alpha * 0.9)
+      );
+    }
+
+    canvas.drawCircle((size/2).toOffset(), playerRadius, Paint()..color = _color,);
 
    
   }
@@ -125,11 +154,12 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
     });
   }
 
-  void collideFromBottom(Brick other) {
+   void collideFromBottom(Brick other) {
     _jumpCount = 2;
+    if (_velocity.y >= 0) {
       _velocity.y = 0;
       position.y = other.position.y - (size.y / 2);
-    
+    }
   }
 
   void collideFromRight(other) {
