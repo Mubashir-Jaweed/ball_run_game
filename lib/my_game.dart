@@ -80,7 +80,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     world.add(
       myPlayer = Player(
-        position: Vector2(0, 1011),
+        position: Vector2(0, 1012),
       ),
     );
 

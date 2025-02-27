@@ -55,29 +55,18 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
     super.update(dt);
     
     position += _velocity * dt;
-    _velocity.y += _gravity * dt;
     if (_isBoostOn) {
       _velocity.x = _boostSpeed;
     } else {
       if(gameRef.currentState.value == gameState.playing){
       _velocity.x = _moveSpeed;
+    _velocity.y += _gravity * dt;
+
 
       }
     }
    
    
-
-    parent!.add(ParticleSystemComponent(
-        position: position.clone(),
-        particle: Particle.generate(
-          count: 1,
-          lifespan: 1.5,
-          generator: (i) => AcceleratedParticle(
-            acceleration: Vector2.all(1),
-            child: CircleParticle(
-                paint: Paint()..color = _color, radius: playerRadius / 1),
-          ),
-        )));
 
     if (position.y > 1300) {
       gameOverWithEffect();
@@ -90,20 +79,12 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
     // TODO: implement render
     super.render(canvas);
 
-   
-
     _playerSprite.render(
       canvas,
       size: size,
     );
 
-    // for (var positions in playerPositions) {
-    //    canvas.drawCircle(
-    //   (size / 2).toOffset(),
-    //   playerRadius,
-    //   Paint()..color = _color,
-    // );
-    // }
+   
   }
 
   @override
@@ -146,10 +127,9 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
 
   void collideFromBottom(Brick other) {
     _jumpCount = 2;
-    if (_velocity.y >= 0) {
       _velocity.y = 0;
       position.y = other.position.y - (size.y / 2);
-    }
+    
   }
 
   void collideFromRight(other) {
