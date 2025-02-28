@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
+import 'package:ball_run/controllers/music_controllers.dart';
 import 'package:ball_run/my_game.dart';
 import 'package:ball_run/spike.dart';
 import 'package:ball_run/star.dart';
@@ -11,8 +12,11 @@ import 'package:flame/components.dart';
 import 'package:flame/particles.dart';
 import 'package:flutter/material.dart';
 
-class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallbacks {
+class Player extends PositionComponent
+    with HasGameRef<MyGame>, CollisionCallbacks {
+      final MusicControllers musicControllers;
   Player({
+    required this.musicControllers,
     required super.position,
     this.playerRadius = 10,
   }) : super(
@@ -57,16 +61,14 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
   void update(double dt) {
     // TODO: implement update
     super.update(dt);
-    
+
     position += _velocity * dt;
     if (_isBoostOn) {
       _velocity.x = _boostSpeed;
     } else {
-      if(gameRef.currentState.value == gameState.playing){
-      _velocity.x = _moveSpeed;
-    _velocity.y += _gravity * dt;
-
-
+      if (gameRef.currentState.value == gameState.playing) {
+        _velocity.x = _moveSpeed;
+        _velocity.y += _gravity * dt;
       }
     }
     if (position.y > 1300) {
@@ -74,15 +76,14 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
       gameRef.gameOver();
     }
 
-
-     _timeSinceLastSegment += dt;
+    _timeSinceLastSegment += dt;
     if (_timeSinceLastSegment >= _tailSegmentInterval) {
       _tailPositions.add({
         'position': position.clone(),
         'alpha': 1.0,
       });
       _timeSinceLastSegment = 0.0;
-      
+
       // Keep tail length manageable
       if (_tailPositions.length > 10) {
         _tailPositions.removeAt(0);
@@ -90,7 +91,8 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
     }
 
     // Update alpha values and remove expired segments
-    _tailPositions.forEach((segment) => segment['alpha'] -= dt / _tailFadeDuration);
+    _tailPositions
+        .forEach((segment) => segment['alpha'] -= dt / _tailFadeDuration);
     _tailPositions.removeWhere((segment) => segment['alpha'] <= 0);
   }
 
@@ -102,18 +104,18 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
     for (final segment in _tailPositions) {
       final pos = (segment['position'] as Vector2) - position;
       final alpha = segment['alpha'] as double;
-      
+
       canvas.drawCircle(
-        (size /2+ pos).toOffset(),
-        playerRadius * (0.3 + 0.7 * alpha), 
-        Paint()
-          ..color = _color.withOpacity(alpha * 0.9)
-      );
+          (size / 2 + pos).toOffset(),
+          playerRadius * (0.3 + 0.7 * alpha),
+          Paint()..color = _color.withOpacity(alpha * 0.9));
     }
 
-    canvas.drawCircle((size/2).toOffset(), playerRadius, Paint()..color = _color,);
-
-   
+    canvas.drawCircle(
+      (size / 2).toOffset(),
+      playerRadius,
+      Paint()..color = _color,
+    );
   }
 
   @override
@@ -141,7 +143,7 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
       gameRef.gameOver();
     }
     if (other is Star) {
-      // print('point');
+      musicControllers.playScoreMusic();
       other.showCollectEffect();
       gameRef.increaseScore();
     }
@@ -154,7 +156,7 @@ class Player extends PositionComponent with HasGameRef<MyGame>,CollisionCallback
     });
   }
 
-   void collideFromBottom(Brick other) {
+  void collideFromBottom(Brick other) {
     _jumpCount = 2;
     if (_velocity.y >= 0) {
       _velocity.y = 0;

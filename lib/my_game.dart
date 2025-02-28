@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:ball_run/boost.dart';
 import 'package:ball_run/brick.dart';
 import 'package:ball_run/controllers/home_controllers.dart';
+import 'package:ball_run/controllers/music_controllers.dart';
 import 'package:ball_run/data/levels.dart';
 import 'package:ball_run/player.dart';
 import 'package:ball_run/spike.dart';
@@ -16,12 +17,11 @@ import 'package:flutter/material.dart';
 enum gameState { playing, pause, gameOver, menu }
 
 class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
-
-   final HomeControllers homeControllers;
-   MyGame({required this.homeControllers});
+  final HomeControllers homeControllers;
+  final MusicControllers musicControllers;
+  MyGame({required this.homeControllers, required this.musicControllers});
   @override
   Color backgroundColor() => const Color(0xff222222);
-
 
   late Player myPlayer;
   late Brick brick;
@@ -62,7 +62,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       generateGameComponents();
       removeAllPreviousComponents();
     }
-
   }
 
   @override
@@ -80,6 +79,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
 
     world.add(
       myPlayer = Player(
+        musicControllers:musicControllers,
         position: Vector2(0, 1012),
       ),
     );
@@ -92,7 +92,6 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     world.add(Brick(position: Vector2(300, 1020)));
 
     generateGameComponents();
-   
   }
 
   void generateGameComponents() {
@@ -161,8 +160,8 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     resumeEngine();
   }
 
-  void startGame()async {
-     bestScore = await homeControllers.getBestScore();
+  void startGame() async {
+    bestScore = await homeControllers.getBestScore();
     print(bestScore);
     currentState.value = gameState.playing;
     currentScore.value = 0;
@@ -217,5 +216,4 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
       comp.removeFromParent();
     }
   }
-
 }

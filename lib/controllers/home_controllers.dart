@@ -5,7 +5,6 @@ class HomeControllers {
   late final SharedPreferences _pref; 
 
   Future<void> init() async{
-    print('initialize');
     _pref = await SharedPreferences.getInstance(); 
   }
 

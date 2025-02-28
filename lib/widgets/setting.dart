@@ -1,9 +1,11 @@
 import 'package:ball_run/controllers/home_controllers.dart';
+import 'package:ball_run/controllers/music_controllers.dart';
 import 'package:flutter/material.dart';
 
 class Setting extends StatefulWidget {
   final HomeControllers homeControllers;
-  const Setting({super.key, required this.homeControllers});
+  final MusicControllers musicControllers;
+  const Setting({super.key, required this.homeControllers, required this.musicControllers});
 
   @override
   State<Setting> createState() => _SettingState();
@@ -81,8 +83,13 @@ class _SettingState extends State<Setting> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.volume_up_rounded),
+                    onPressed: () {
+                      widget.musicControllers.toggleMusic();
+                      setState(() {
+                        
+                      });
+                    },
+                    icon: Icon(!widget.musicControllers.isPlaying?  Icons.volume_up_rounded:Icons.volume_off_rounded),
                     iconSize: 35,
                     color: Colors.white,
                   ),

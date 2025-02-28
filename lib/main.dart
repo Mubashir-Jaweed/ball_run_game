@@ -1,20 +1,21 @@
 import 'package:ball_run/controllers/home_controllers.dart';
+import 'package:ball_run/controllers/music_controllers.dart';
 import 'package:ball_run/my_game.dart';
 import 'package:ball_run/widgets/setting.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HomeControllers homeController = HomeControllers();
+  MusicControllers musicControllers = MusicControllers();
   await homeController.init();
+  await musicControllers.init();
 
   runApp(MaterialApp(
     home: HomePage(
       homeControllers: homeController,
+      musicControllers: musicControllers,
     ),
     debugShowCheckedModeBanner: false,
     theme: ThemeData(fontFamily: 'Chewy'),
@@ -23,7 +24,11 @@ void main() async {
 
 class HomePage extends StatefulWidget {
   final HomeControllers homeControllers;
-  const HomePage({super.key, required this.homeControllers});
+  final MusicControllers musicControllers;
+  const HomePage(
+      {super.key,
+      required this.homeControllers,
+      required this.musicControllers});
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -34,7 +39,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _myGame = MyGame( homeControllers: widget.homeControllers,);
+    _myGame = MyGame(
+      homeControllers: widget.homeControllers,
+      musicControllers: widget.musicControllers,
+    );
   }
 
   @override
@@ -145,8 +153,12 @@ class _HomePageState extends State<HomePage> {
                                       iconSize: 35,
                                     ),
                                     IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.volume_up_rounded),
+                                      onPressed: () {
+                                        setState(() {
+                                          widget.musicControllers.toggleMusic();
+                                        });
+                                      },
+                                      icon: Icon(widget.musicControllers.isPlaying ?Icons.volume_off_rounded : Icons.volume_up_rounded),
                                       iconSize: 35,
                                       color: Colors.white,
                                     )
@@ -169,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                                         CrossAxisAlignment.center,
                                     children: [
                                       Container(
-                                         padding: EdgeInsets.only(top: 15),
+                                        padding: EdgeInsets.only(top: 15),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -180,7 +192,8 @@ class _HomePageState extends State<HomePage> {
                                               decoration: BoxDecoration(
                                                   color: Colors.white10,
                                                   borderRadius:
-                                                      BorderRadius.circular(50)),
+                                                      BorderRadius.circular(
+                                                          50)),
                                               child: IconButton(
                                                 onPressed: () {
                                                   _myGame.menu();
@@ -196,7 +209,8 @@ class _HomePageState extends State<HomePage> {
                                               decoration: BoxDecoration(
                                                   color: Colors.white10,
                                                   borderRadius:
-                                                      BorderRadius.circular(50)),
+                                                      BorderRadius.circular(
+                                                          50)),
                                               child: InkWell(
                                                 onTap: () {},
                                                 child: Image.asset(
@@ -391,7 +405,12 @@ class _HomePageState extends State<HomePage> {
                                             builder: (context) {
                                               return Material(
                                                 type: MaterialType.transparency,
-                                                child: Setting(homeControllers: widget.homeControllers,),
+                                                child: Setting(
+                                                  homeControllers:
+                                                      widget.homeControllers,
+                                                  musicControllers:
+                                                      widget.musicControllers,
+                                                ),
                                               );
                                             },
                                           );
@@ -411,7 +430,7 @@ class _HomePageState extends State<HomePage> {
                                       child: InkWell(
                                         onTap: () {},
                                         child: Image.asset(
-                                          'assets/images/noads.png', 
+                                          'assets/images/noads.png',
                                           height: 40,
                                           width: 40,
                                         ),
