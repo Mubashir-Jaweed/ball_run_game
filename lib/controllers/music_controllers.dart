@@ -15,8 +15,6 @@ class MusicControllers {
 
     if (isPlaying) {
       await playMusic();
-    } else if (!isPlaying) {
-      await stopMusic();
     }
   }
 
@@ -36,9 +34,17 @@ class MusicControllers {
     print('stop music');
 
     await _audioPlayer.stop();
+
     _pref.setBool('isMusicPlaying', false);
   }
+
+
+  Future<void> _playSoundEffect(String soundFile) async {
+    final AudioPlayer soundEffectPlayer = AudioPlayer();
+    await soundEffectPlayer.play(AssetSource(soundFile));
+  }
+
   Future<void> playScoreMusic() async {
-   await _audioPlayer.play(AssetSource(Audios.score));
+   await _playSoundEffect(Audios.score);
   }
 }
