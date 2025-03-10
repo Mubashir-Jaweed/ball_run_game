@@ -9,7 +9,6 @@ class MusicControllers {
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   Future<void> init() async {
-    print('object');
     _pref = await SharedPreferences.getInstance();
     isPlaying = _pref.getBool('isMusicPlaying') ?? true;
 

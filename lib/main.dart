@@ -8,14 +8,11 @@ import 'package:flutter/material.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HomeControllers homeController = HomeControllers();
-  MusicControllers musicControllers = MusicControllers();
   await homeController.init();
-  await musicControllers.init();
 
   runApp(MaterialApp(
     home: HomePage(
       homeControllers: homeController,
-      musicControllers: musicControllers,
     ),
     debugShowCheckedModeBanner: false,
     theme: ThemeData(fontFamily: 'Chewy'),
@@ -24,24 +21,26 @@ void main() async {
 
 class HomePage extends StatefulWidget {
   final HomeControllers homeControllers;
-  final MusicControllers musicControllers;
   const HomePage(
       {super.key,
-      required this.homeControllers,
-      required this.musicControllers});
+      required this.homeControllers});
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   late MyGame _myGame;
+    MusicControllers musicControllers = MusicControllers();
+
+    void initializeMusicController () async => await musicControllers.init();
 
   @override
   void initState() {
+    initializeMusicController();
     super.initState();
     _myGame = MyGame(
       homeControllers: widget.homeControllers,
-      musicControllers: widget.musicControllers,
+      musicControllers: musicControllers,
     );
   }
 
@@ -155,10 +154,10 @@ class _HomePageState extends State<HomePage> {
                                     IconButton(
                                       onPressed: () {
                                         setState(() {
-                                          widget.musicControllers.toggleMusic();
+                                          musicControllers.toggleMusic();
                                         });
                                       },
-                                      icon: Icon(widget.musicControllers.isPlaying ?Icons.volume_off_rounded : Icons.volume_up_rounded),
+                                      icon: Icon(musicControllers.isPlaying ?Icons.volume_off_rounded : Icons.volume_up_rounded),
                                       iconSize: 35,
                                       color: Colors.white,
                                     )
@@ -409,7 +408,7 @@ class _HomePageState extends State<HomePage> {
                                                   homeControllers:
                                                       widget.homeControllers,
                                                   musicControllers:
-                                                      widget.musicControllers,
+                                                      musicControllers,
                                                 ),
                                               );
                                             },
