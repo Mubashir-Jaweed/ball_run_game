@@ -32,7 +32,7 @@ class Player extends PositionComponent
   final double playerRadius;
   bool _isBoostOn = false;
   int _jumpCount = 2;
-  late Sprite _playerSprite;
+  // late Sprite _playerSprite;
   final List<Map<String, dynamic>> _tailPositions = [];
   double _timeSinceLastSegment = 0.0;
   static const double _tailSegmentInterval = 0.05;
@@ -49,7 +49,7 @@ class Player extends PositionComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    _playerSprite = await Sprite.load('player.png');
+    // _playerSprite = await Sprite.load('player.png');
     add(CircleHitbox(
       anchor: anchor,
       radius: playerRadius,
@@ -73,6 +73,7 @@ class Player extends PositionComponent
     }
     if (position.y > 1300) {
       gameOverWithEffect();
+      musicControllers.playLoseMusic();
       gameRef.gameOver();
     }
 
@@ -139,6 +140,7 @@ class Player extends PositionComponent
 
     if (other is Spike) {
       // print('game over');
+      musicControllers.playLoseMusic();
       gameOverWithEffect();
       gameRef.gameOver();
     }
@@ -171,6 +173,7 @@ class Player extends PositionComponent
 
   void jump() {
     if (_jumpCount >= 1) {
+      musicControllers.playJumpMusic();
       _jumpCount -= 1;
       _velocity.y = -_jumpSpeed;
     }

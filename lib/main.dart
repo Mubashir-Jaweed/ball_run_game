@@ -372,6 +372,7 @@ class _HomePageState extends State<HomePage> {
                   alignment: Alignment.topCenter,
                   child: InkWell(
                     onTap: () {
+                      musicControllers.playTapMusic();
                       _myGame.startGame();
                     },
                     child: Container(

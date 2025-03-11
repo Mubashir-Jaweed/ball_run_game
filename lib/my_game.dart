@@ -90,6 +90,14 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     world.add(Brick(position: Vector2(100, 1020)));
     world.add(Brick(position: Vector2(200, 1020)));
     world.add(Brick(position: Vector2(300, 1020)));
+    // world.add(Brick(position: Vector2(400, 1020)));
+    // world.add(Brick(position: Vector2(500, 1020)));
+    // world.add(Brick(position: Vector2(600, 1020)));
+    // world.add(Star(position: Vector2(200, 1000)));
+    // world.add(Star(position: Vector2(300, 1000)));
+    // world.add(Star(position: Vector2(400, 1000)));
+    // world.add(Star(position: Vector2(500, 1000)));
+    // world.add(Star(position: Vector2(600, 1000)));
 
     generateGameComponents();
   }
