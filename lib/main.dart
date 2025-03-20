@@ -211,7 +211,8 @@ class _HomePageState extends State<HomePage> {
                                                       BorderRadius.circular(
                                                           50)),
                                               child: InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                },
                                                 child: Image.asset(
                                                   'assets/images/noads.png',
                                                   height: 40,
@@ -332,7 +333,9 @@ class _HomePageState extends State<HomePage> {
                                                 )),
                                           ),
                                           InkWell(
-                                            onTap: () {},
+                                            onTap: () {
+                                              _myGame.revivePlayer();
+                                            },
                                             child: Container(
                                               decoration: BoxDecoration(
                                                   borderRadius:

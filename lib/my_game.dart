@@ -28,6 +28,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   late Brick _latestBrick;
   late int startFrom;
   late int count;
+  late Vector2 playerLastPosition;
   final ValueNotifier<int> currentScore = ValueNotifier<int>(0);
   late int bestScore;
   final ValueNotifier<gameState> currentState =
@@ -54,6 +55,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     super.update(dt);
     final playerX = myPlayer.position.x;
     final playerY = myPlayer.position.y;
+    playerLastPosition = myPlayer.position;
     camera.viewfinder.position = Vector2(
       playerX,
       playerY + 20,
@@ -188,6 +190,16 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     currentState.value = gameState.playing;
     currentScore.value = 0;
     initializeGame();
+  }
+
+  void revivePlayer(){
+    print('object');
+     world.add(
+      myPlayer = Player(
+        musicControllers:musicControllers,
+        position:playerLastPosition,
+      ),
+    );
   }
 
   void removeAllPreviousComponents() {
