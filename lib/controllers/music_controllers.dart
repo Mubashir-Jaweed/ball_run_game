@@ -9,7 +9,6 @@ class MusicControllers {
   Future<void> init() async {
     _pref = await SharedPreferences.getInstance();
 
-    // Preload background music and sound effects
     await FlameAudio.audioCache.loadAll([
       Audios.score,
       Audios.tap,

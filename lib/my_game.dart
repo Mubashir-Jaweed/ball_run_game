@@ -14,7 +14,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-enum gameState { playing, pause, gameOver, menu }
+enum gameState { playing, pause, gameOver, menu, reviving }
 
 class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   final HomeControllers homeControllers;
@@ -28,7 +28,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   late Brick _latestBrick;
   late int startFrom;
   late int count;
-  late Vector2 playerLastPosition;
+  late double playerLastPosition;
   final ValueNotifier<int> currentScore = ValueNotifier<int>(0);
   late int bestScore;
   final ValueNotifier<gameState> currentState =
@@ -55,7 +55,7 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
     super.update(dt);
     final playerX = myPlayer.position.x;
     final playerY = myPlayer.position.y;
-    playerLastPosition = myPlayer.position;
+    playerLastPosition = myPlayer.position.x;
     camera.viewfinder.position = Vector2(
       playerX,
       playerY + 20,
@@ -193,13 +193,14 @@ class MyGame extends FlameGame with TapCallbacks, HasCollisionDetection {
   }
 
   void revivePlayer(){
-    print('object');
      world.add(
       myPlayer = Player(
         musicControllers:musicControllers,
-        position:playerLastPosition,
+        position:Vector2(playerLastPosition - 200,_latestBrick.position.y + -50),
       ),
     );
+    debugPrint('${_latestBrick.position.y}');
+    currentState.value = gameState.reviving;
   }
 
   void removeAllPreviousComponents() {
